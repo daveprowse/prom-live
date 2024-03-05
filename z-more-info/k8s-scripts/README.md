@@ -35,9 +35,13 @@ These scripts are based on the work of the following:
 
 - Run the script on each host. This will install containerd and configure it as needed for Ubuntu 22.04
 
-  `./container-install.sh`
+  `sudo ./container-install.sh`
 
 When the script is finished you should see a completion message. 👍
+
+Check to make sure the service is active and running:
+
+`systemctl status containerd`
 
 > Note: These scripts address a variety of issues that you can run into when manually installing containerd and kubetools.
 
@@ -49,26 +53,33 @@ When the script is finished you should see a completion message. 👍
 
 - Run the script on each host. This will install kubelet, kubeadm, kubectl, and  and configure them as needed for Ubuntu 22.04
 
-  `./kubetools-install.sh`
+  `sudo ./kubetools-install.sh`
 
 When the script is finished you should see a completion message. 👍👍
 
 ## Initialize Kubernetes on the Controller
 
-On the Controller VM initialize Kubernetes with the following command:
+(On the Controller VM only) Initialize Kubernetes with the following command:
 
 `kubeadm init`
 
-If you have configured everything, and the scripts ran properly, the Kube should initialize. It may take a few minutes.
+If you have configured everything, and the scripts ran properly, the Kube should initialize on the controller VM. It may take a few minutes.
 
+## Set up the Client on the Controller
 
+Issue the three commands that were shown to set up the Kubernetes client on the controller:
 
+```console
 
-
-
-
+```
 
 ## Install Calico Networking on the Controller
+
+For simplicity we are using a Calico networking manifest to set up some networking for our Kubernetes cluster.
+
+On the controller, configure Calico networking with the following command:
+
+`kubectl apply -f calico.yaml`
 
 
 

@@ -48,7 +48,7 @@ sudo crictl config --set \
 echo 'after initializing the control node, follow instructions and use kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/calico.yaml to install the calico plugin (control node only). On the worker nodes, use sudo kubeadm join ... to join'
 
 # Completion Messages
-clear -x; echo; echo
+printf '%.0s\n' {1..3}
 printf "\nTime to complete = %s seconds" "$SECONDS"
 echo
 printf "\n\033[7;32mPROCESS COMPLETE! THE KUBETOOLS SHOULD NOW BE INSTALLED. CONTINUE WITH THE README FILE! \033[0m"
