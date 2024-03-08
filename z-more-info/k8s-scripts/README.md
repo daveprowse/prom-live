@@ -6,11 +6,11 @@ If you want to install a vanilla version of Kubernetes (kubeadm), and setup a ba
 **Credits:**
 These scripts are based on the work of the following:
 
+- https://kubernetes.io/docs/setup/production-environment/container-runtime
+- https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm
 - Sander Van Vugt:
   - https://github.com/sandervanvugt/cka
   - Check out his CKA video Course: https://learning.oreilly.com/videos/certified-kubernetes-administrator/9780138103804
-- https://kubernetes.io/docs/setup/production-environment/container-runtime
-- https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
 
 ---
 
@@ -57,11 +57,13 @@ Check to make sure the service is active and running:
 
 When the script is finished you should see a completion message. 👍👍
 
+> Note: If it asks to overwrite a keyring, answer yes (y).
+
 ## Initialize Kubernetes on the Controller
 
 (On the Controller VM only) Initialize Kubernetes with the following command:
 
-`kubeadm init`
+`sudo kubeadm init`
 
 If you have configured everything, and the scripts ran properly, the Kube should initialize on the controller VM. It may take a few minutes.
 
@@ -70,8 +72,17 @@ If you have configured everything, and the scripts ran properly, the Kube should
 Issue the three commands that were shown to set up the Kubernetes client on the controller:
 
 ```console
-
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
+
+> **IMPORTANT!** If you do not set up the client on the controller, you will not be able to continue properly!
+
+> Note: 
+> Alternatively, if you are the root user, you can run:
+>
+> `export KUBECONFIG=/etc/kubernetes/admin.conf`
 
 ## Install Calico Networking on the Controller
 
@@ -81,16 +92,74 @@ On the controller, configure Calico networking with the following command:
 
 `kubectl apply -f calico.yaml`
 
+That should set up networking for your Kubernetes cluster. 👍👍👍
 
+Run the following commands:
 
+- `kubectl get ns`
+- `kubectl get all`
+- `kubectl get nodes`
 
+This should result in something similar to the following:
 
+```console
+NAME              STATUS   AGE
+default           Active   9m7s
+kube-node-lease   Active   9m7s
+kube-public       Active   9m7s
+kube-system       Active   9m7s
+NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   9m4s
+NAME         STATUS   ROLES           AGE    VERSION
+controller   Ready    control-plane   9m8s   v1.29.2
+```
 
-- In the repository you will find a script named `calico-networking.sh`. Make sure that it's permissions are set to execute.
+As you can see, we only have one node (the controller). We will add the workers now.
 
-  `chmod container-install.sh`
+> Note: If for some reason, the command `kubectl apply -f calico.yml` does not work, try checking the following:
+> - kubetools were installed
+> - client was installed
+> - restarting the server (if necessary)
 
-- Run the script on the controller **ONLY**. 
+## Connect the Worker Nodes to the Kubernetes Cluster
 
-  `./calic-networking.sh`
+To connect a worker system to the K8s cluster you need the `sudo kubeadm join` command. 
 
+When your `kubeadm init` command completed on the controller you should have seen the join command (and key) that can be used on the workers. If for some reason you can't see it, you can display it again with the following command on the controller:
+
+`kubeadm token create --print-join-command`
+
+Here's an example of the result:
+
+`kubeadm join 10.42.88.100:6443 --token rl378B.szitojybs62853wn --discovery-token-ca-cert-hash sha256:cfecb24835f0...`
+
+Use that command to join your workers to the Kubernetes cluster. Remember to use `sudo`!
+
+Wait 1 minute for the nodes to be completely joined to the cluster.
+
+Then, on the controller type the following command:
+
+`kubectl get nodes`
+
+You should see results similar to the following:
+
+```console
+NAME         STATUS   ROLES           AGE    VERSION
+controller   Ready    control-plane   35m    v1.29.2
+worker1      Ready    <none>          109s   v1.29.2
+worker2      Ready    <none>          95s    v1.29.2
+```
+
+If any of your nodes are showing as "Not Ready" give it another minute for them to initialize. 
+
+---
+
+## 👍👍👍👍 That's it! 
+
+The Kubernetes cluster should now be up and running! And yes, quad-thumbs up!
+
+If you have any questions, feel free to contact me:
+
+Website: https://prowse.tech
+
+Discord Server: https://discord.gg/mggw8VGzUp

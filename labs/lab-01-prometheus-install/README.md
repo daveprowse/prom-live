@@ -1,4 +1,4 @@
-# Prometheus Installation
+# ⚙️ Lab 01 - Prometheus Installation ⚙️
 
 There are a variety of ways to install Prometheus. You can do a basic installation from source, install to Docker, or use my provided script. For this webinar I recommend using the script. It does a lot of the work for you!
 
@@ -6,7 +6,9 @@ There are a variety of ways to install Prometheus. You can do a basic installati
 
 The included `prometheus-install.sh` script is designed for Ubuntu 22.04 Server and Debian 12 Server (x64 platform) and has been tested on both.
 
-Simply run the script as `root` or with `sudo`. (Make sure that it is set to executable.)
+Simply run the script as `root` or with `sudo`.
+
+> Note: Make sure that it is set to executable. `chmod +x prometheus-install.sh`
 
 Here's what the script will do:
 
@@ -17,16 +19,18 @@ Here's what the script will do:
 
 Once finished, Prometheus will run automatically and should be accessible from `http://127.0.0.1:9090`.
 
+> Note: It should also be accessible from remote systems. If you have a firewall installed on the Prometheus system, you will need to make sure that port 9090 is open.
+
+👍 **GREAT WORK!!** 👍
+
 ---
 
 At any time, if you want to work with Prometheus manually, do the following:
 
-1. Disable the Prometheus service: `sudo systemctl --now disable prometheus`
+1. Disable the Prometheus service: `sudo systemctl stop prometheus`
 2. Access the following directory: `/usr/local/bin/prometheus`
 3. Run Prometheus with the `sudo ./prometheus` command.
 4. Have fun!
-
-👍 **GREAT WORK!!** 👍
 
 ---
 
