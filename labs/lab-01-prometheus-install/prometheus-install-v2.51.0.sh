@@ -12,7 +12,7 @@
 
 ## !!! THIS IS FOR EDUCATIONAL PURPOSES ONLY. ONLY RUN THIS SCRIPT ON A TEST SYSTEM !!!
 
-### TODO:  node-exporter, systend hardening options in service file, EnvironmentFile=/etc/default/prometheus in [Service] ???
+### TODO:  node-exporter ??, systend hardening options in service file, EnvironmentFile=/etc/default/prometheus in [Service] ???
 
 #########################################
 
@@ -83,7 +83,7 @@ groupadd --system prometheus
 useradd -s /sbin/nologin --system -g prometheus prometheus
 mkdir -p /var/lib/prometheus/metrics2
 mkdir {/etc/prometheus,/usr/share/prometheus}
-## Install Prometheus
+## Download, extract, and copy Prometheus files
 wget https://github.com/prometheus/prometheus/releases/download/$PROMVERSION/$PROM.tar.gz
 tar -xvf $PROM.tar.gz 
 cd $PROM
@@ -95,7 +95,6 @@ chown prometheus:prometheus /usr/bin/prometheus
 chown prometheus:prometheus /var/lib/prometheus
 chown -R prometheus:prometheus /etc/prometheus/consoles
 chown -R prometheus:prometheus /etc/prometheus/console_libraries
-#export PATH=/usr/local/bin/prometheus:$PATH
 
 # Build Prometheus service
 cat > /lib/systemd/system/prometheus.service <<\EOF
@@ -149,12 +148,12 @@ printf "\nTime to complete = %s seconds" "$SECONDS"
 echo
 printf "\n\033[7;32mPROCESS COMPLETE! PROMETHEUS SHOULD NOW BE RUNNING AS A SERVICE.\033[0m"
 printf '%.0s\n' {1..2}
-echo -e "The main Prometheus configuration YAML file is at: /usr/local/bin/prometheus/prometheus.yml"
+echo -e "The main Prometheus configuration YAML file is at: /etc/prometheus/prometheus.yml"
 printf '%.0s\n' {1..2}
 echo -e "Note: To run Prometheus manually, do the following: \n
-1. Disable the Prometheus service: 'sudo systemctl --now disable prometheus' \n
-2. Access the following directory: /usr/bin/prometheus \n
-3. Run Prometheus directly from there or with the 'sudo ./prometheus' command. \n"
+1. Stop the Prometheus service: 'sudo systemctl stop prometheus' \n
+2. Run the prometheus command, for example: 'prometheus --config.file=/etc/prometheus/prometheus.yml' \n
+3. Have fun! \n"
 printf "\n\033[7;36m ENJOY! \033[0m"
 
 printf '%.0s\n' {1..3}

@@ -81,20 +81,19 @@ Once finished, Prometheus will run automatically and should be accessible from `
 At any time, if you want to work with Prometheus manually, do the following:
 
 1. Disable the Prometheus service: `sudo systemctl stop prometheus`
-2. Access the following directory: `/usr/local/bin/prometheus`
-3. Run Prometheus with the `sudo ./prometheus` command.
-4. Have fun!
+2. Run the prometheus command, for example: `prometheus --config.file=/etc/prometheus/prometheus.yml`  
+3. Have fun!
 
 ---
 
-> Note: This script works with CentOS Stream 9 but you will need to satisfy SELinux requirements. After you execute the script, run the following command from Prometheus' parent directory `/usr/local/bin`:
+> Note for CentOS 9 users: This script should work with CentOS Stream 9 but you may need to satisfy SELinux requirements. After you execute the script, if the service fails, run the following command:
 >
-> `chcon -t bin_t 'prometheus/prometheus'`
+> `chcon -t bin_t '/usr/bin/prometheus'`
 >
 > and then restart the service: `sudo systemctl restart prometheus`.
 >
 > Test it with `curl http://127.0.0.1:9090`
 >
-> Note: Make sure that cockpit.socket is disabled! (It uses the same port.)
+> Note: Make sure that cockpit.socket is disabled! (It uses the same port.) `sudo systemctl --now disable cockpit.service`
 
 ---
