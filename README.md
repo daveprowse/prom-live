@@ -8,12 +8,11 @@
 
 ---
 
-Dave Prowse
-https://prowse.tech
+Copyright (c) 2024 Dave Prowse
+
+Website: https://prowse.tech
 
 Discord Server: https://discord.gg/mggw8VGzUp
-
-Copyright (c) 2024 Dave Prowse
 
 ---
 

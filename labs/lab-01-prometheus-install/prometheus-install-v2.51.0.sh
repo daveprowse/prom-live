@@ -2,6 +2,8 @@
 
 #########################################
 
+## March, 2024. Written by Dave Prowse: https://prowse.tech
+
 ## This script will install Prometheus on Debian 12 or Ubuntu 22.04 x64 systems.
 ## Includes Go and NodeJS.
 ## Prometheus will be set up as a service that runs automatically.
@@ -10,17 +12,18 @@
 
 ## !!! THIS IS FOR EDUCATIONAL PURPOSES ONLY. ONLY RUN THIS SCRIPT ON A TEST SYSTEM !!!
 
-## Written by Dave Prowse: https://prowse.tech
+### TODO:  node-exporter, systend hardening options in service file, EnvironmentFile=/etc/default/prometheus in [Service] ???
 
 #########################################
 
 # Variables
-GO=go1.22.0.linux-amd64
-GOVERSION=v1.22.0
-NODEJS=node-v20.11.1-linux-x64
-NODEJSVERSION=v20.11.1
-PROM=prometheus-2.50.1.linux-amd64
-PROMVERSION=v2.50.1
+GO=go1.22.1.linux-amd64
+GOVERSION=v1.22.1
+NODEJS=node-v20.12.0-linux-x64
+NODEJSVERSION=v20.12.0
+PROM=prometheus-2.51.0.linux-amd64
+PROMVERSION=v2.51.0
+UBUNTU_MAN_VERSION=jammy
 
 clear -x
 
@@ -71,52 +74,67 @@ EOL
 echo;node -v;echo;sleep 2
 ## npm version 7 or greater is required by Prometheus. The Node JS installation should install verison 10 or higher of npm.
 
-# Install Prometheus version 2.50.1
+# Install Prometheus
 echo
 printf "\n\033[7;32mSTARTING PROMETHEUS $PROMVERSION INSTALLATION IN 3 SECONDS! \033[0m"
 echo;sleep 3;echo
 ## Create system user and directories
 groupadd --system prometheus
 useradd -s /sbin/nologin --system -g prometheus prometheus
-mkdir /var/lib/prometheus
+mkdir -p /var/lib/prometheus/metrics2
+mkdir {/etc/prometheus,/usr/share/prometheus}
 ## Install Prometheus
 wget https://github.com/prometheus/prometheus/releases/download/$PROMVERSION/$PROM.tar.gz
 tar -xvf $PROM.tar.gz 
-mv $PROM /usr/local/bin/prometheus
+cd $PROM
+cp {prometheus,promtool} /usr/bin/
+cp -r {console_libraries/,consoles/,LICENSE,NOTICE,prometheus.yml} /etc/prometheus
+
 ## Set permissions for system account
-chown prometheus:prometheus /usr/local/bin/prometheus
+chown prometheus:prometheus /usr/bin/prometheus
 chown prometheus:prometheus /var/lib/prometheus
-chown -R prometheus:prometheus /usr/local/bin/prometheus/consoles
-chown -R prometheus:prometheus /usr/local/bin/prometheus/console_libraries
-export PATH=/usr/local/bin/prometheus:$PATH
+chown -R prometheus:prometheus /etc/prometheus/consoles
+chown -R prometheus:prometheus /etc/prometheus/console_libraries
+#export PATH=/usr/local/bin/prometheus:$PATH
 
 # Build Prometheus service
-cat > /etc/systemd/system/prometheus.service <<\EOF
+cat > /lib/systemd/system/prometheus.service <<\EOF
 [Unit]
-Description=Prometheus
-Documentation=https://prometheus.io/docs/introduction/overview/
-Wants=network-online.target
-After=network-online.target
+Description=Monitoring system and time series database (Prometheus)
+Documentation=https://prometheus.io/docs/introduction/overview/ man:prometheus(1)
+After=time-sync.target
+
 [Service]
+Restart=on-failure
 User=prometheus
 Group=prometheus
-Type=simple
-ExecStart=/usr/local/bin/prometheus/prometheus \
---config.file /usr/local/bin/prometheus/prometheus.yml \
+ExecStart=/usr/bin/prometheus $ARGS \
+--config.file /etc/prometheus/prometheus.yml \
 --storage.tsdb.path /var/lib/prometheus/ \
---web.console.templates=/usr/local/bin/prometheus/consoles \
---web.console.libraries=/usr/local/bin/prometheus/console_libraries
+--web.console.templates=/etc/prometheus/consoles \
+--web.console.libraries=/etc/prometheus/console_libraries
+ExecReload=/bin/kill -HUP $MAINPID
+TimeoutStopSec=20s
+SendSIGKILL=no
 
 [Install]
 WantedBy=multi-user.target
 EOF
-## Start Prometheus service
+
+# Start Prometheus service
 systemctl daemon-reload
 systemctl --now enable prometheus
 
+# Install Man pages - From Ubuntu
+cd ..
+wget https://manpages.ubuntu.com/manpages.gz/$UBUNTU_MAN_VERSION/man1/prometheus.1.gz
+cp prometheus.1.gz /usr/share/man/man1
+wget https://manpages.ubuntu.com/manpages.gz/$UBUNTU_MAN_VERSION/man1/promtool.1.gz
+cp promtool.1.gz /usr/share/man/man1
+
 # Clean UP!
 cd ..
-rm -r temp/
+rm -rf temp/
 sleep 2
 
 # Completion messages
@@ -125,7 +143,7 @@ printf "If the versions of Go, NodeJS, and Prometheus are listed below, then the
 printf '%.0s\n' {1..2}
 go version
 echo;echo "nodejs version=$(node -v)";echo
-/usr/local/bin/prometheus/prometheus --version
+prometheus --version
 printf '%.0s\n' {1..2}
 printf "\nTime to complete = %s seconds" "$SECONDS"
 echo
@@ -135,8 +153,8 @@ echo -e "The main Prometheus configuration YAML file is at: /usr/local/bin/prome
 printf '%.0s\n' {1..2}
 echo -e "Note: To run Prometheus manually, do the following: \n
 1. Disable the Prometheus service: 'sudo systemctl --now disable prometheus' \n
-2. Access the following directory: /usr/local/bin/prometheus \n
-3. Run Prometheus with the 'sudo ./prometheus' command. \n"
+2. Access the following directory: /usr/bin/prometheus \n
+3. Run Prometheus directly from there or with the 'sudo ./prometheus' command. \n"
 printf "\n\033[7;36m ENJOY! \033[0m"
 
 printf '%.0s\n' {1..3}
