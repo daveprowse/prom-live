@@ -8,11 +8,11 @@
 
 ## It is tested on Ubuntu 22.04 and Debian 12, but should work on other systemd-based Linux distros as well.
 
-## To install a newer version of the node_explorer simply change the version number in the node_explorer variables below.
+## To install a newer version of the node_explorer simply change the version number in the two node_explorer variables below.
 
 ## !!! THIS IS FOR EDUCATIONAL PURPOSES ONLY. ONLY RUN THIS SCRIPT ON A TEST SYSTEM !!!
 
-## Todo: harden the service, work with port config options...
+## Todo: harden the service, work with port config options, more bash linting...
 
 #########################################
 
@@ -65,7 +65,7 @@ EOF
 systemctl daemon-reload
 systemctl --now enable node_exporter
 
-# Install Man pages - From Ubuntu
+# Install man page - From Ubuntu
 cd ..
 wget https://manpages.ubuntu.com/manpages.gz/$UBUNTU_MAN_VERSION/man1/prometheus-node-exporter.1.gz
 cp prometheus-node-exporter.1.gz /usr/share/man/man1
@@ -81,11 +81,11 @@ printf "\nTime to complete = %s seconds" "$SECONDS"
 echo
 printf "\n\033[7;32mPROCESS COMPLETE! NODE_EXPORTER SHOULD NOW BE RUNNING AS A SERVICE AND LISTENING ON PORT 9100.\033[0m"
 printf '%.0s\n' {1..2}
-echo -e "Note: To analyze this system from your main Prometheus server, add this system's IP address and port 9100 in prometheus.yml > scrape_configs > targets. For example: '- targets: ['<ip_address>:9100']'"
+echo -e "Note: To analyze this system from your main Prometheus server, \nadd this system's IP address and port 9100 in prometheus.yml > scrape_configs > targets. \nFor example: '- targets: ['<ip_address>:9100']'"
 printf '%.0s\n' {1..2}
 printf "\n\033[7;36m ENJOY! \033[0m"
 
-printf '%.0s\n' {1..3}
+printf '%.0s\n' {1..2}
 
 fi
 
