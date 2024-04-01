@@ -40,7 +40,7 @@ sleep 1
 echo
 mkdir temp 
 cd temp || return
-wget https://github.com/prometheus/node_exporter/releases/download/NODE_EXPORTER_VERSION/NODE_EXPORTER.tar.gz
+wget https://github.com/prometheus/node_exporter/releases/download/$NODE_EXPORTER_VERSION/$NODE_EXPORTER.tar.gz
 tar -xvf $NODE_EXPORTER.tar.gz
 cp ./$NODE_EXPORTER/node_exporter /usr/local/bin
 
