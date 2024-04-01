@@ -22,8 +22,8 @@ GO=go1.22.1.linux-amd64
 GOVERSION=v1.22.1
 NODEJS=node-v20.12.0-linux-x64
 NODEJSVERSION=v20.12.0
-PROM=prometheus-2.51.0.linux-amd64
 PROMVERSION=v2.51.0
+PROM=prometheus-2.51.0.linux-amd64
 UBUNTU_MAN_VERSION=noble
 
 clear -x
@@ -91,7 +91,7 @@ cd $PROM
 cp {prometheus,promtool} /usr/bin/
 cp -r {console_libraries/,consoles/,LICENSE,NOTICE,prometheus.yml} /etc/prometheus
 
-## Set permissions for system account
+## Set permissions for system accountnode_exporter-1.7.0.linux-amd64.tar.gz
 chown prometheus:prometheus /usr/bin/prometheus
 chown prometheus:prometheus /var/lib/prometheus
 chown -R prometheus:prometheus /etc/prometheus/consoles

@@ -26,7 +26,7 @@ Link: https://github.com/daveprowse/prom-live
 
 ## Prometheus & Linux
 
-Although you can get away with a single Linux system for this course, I highly recommend that you ready at least two, local, Linux virtual machines. One to run Prometheus, and the other to be monitored.
+Although you can get away with a single Linux system for this course, I highly recommend that you ready at least two, local, Linux virtual machines in a NAT network. One to run Prometheus, and the other to be monitored. This is a best practice that will allow your systems to be somewhat isolated from your main system and network.
 
 The scripts and labs are designed for **Ubuntu** 22.04 Server or **Debian** 12 server (x64 platform). Work as root or as a user with sudo powers.
 
@@ -37,7 +37,7 @@ If you don't have either Debian or Ubuntu you can download them from the followi
 
 > Note: If you choose to run Debian, make sure that you install it as a server. To do so, deselect any desktops (GNOME, KDE, etc...) during the Task Selection phase of the installation.
 
-Most importantly, to install Prometheus see the first lab at [this link](./labs/lab-01-prometheus-install/README.md).
+Most importantly, to install Prometheus see the first lab at [this link](./labs/lab-01/README.md).
 
 ## Kubernetes
 
