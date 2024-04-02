@@ -68,7 +68,6 @@ systemctl daemon-reload
 systemctl --now enable node_exporter
 
 # Install man page - From Ubuntu
-cd ..
 wget https://manpages.ubuntu.com/manpages.gz/$UBUNTU_MAN_VERSION/man1/prometheus-node-exporter.1.gz
 cp prometheus-node-exporter.1.gz /usr/share/man/man1
 
