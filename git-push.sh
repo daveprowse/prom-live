@@ -6,5 +6,5 @@ echo 'Running Script!'
 #x=$(date -I)
 
 git add 
-git commit -m "$(date -I)"
+git commit -m "$(date %m-%d-%Y---%H-%M)"
 git push -u origin main
