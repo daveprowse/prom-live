@@ -5,6 +5,6 @@
 echo 'Running Script!'
 #x=$(date -I)
 
-git add 
-git commit -m "$(date '+%m-%d-%Y | %H:%M:%S %r')"
+git add .
+git commit -m "$(date '+%m-%d-%Y | %r')"
 git push -u origin main
