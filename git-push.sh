@@ -3,12 +3,14 @@
 ## Pushes all content automatically and gives timestamp for date
 
 echo 'Running Script!'
-x=`date -I`
-echo -n -e "`git add .`"
-echo -n -e "`git commit -m $(x)`"
-echo "`git push -u origin main`"
+x=$(date -I)
+
+echo "$(git add .)"
+echo "$(git commit -m '(date -I)')"
+echo "$(git push -u origin main)"
 
 
 testedte
 
 test2
+test3
