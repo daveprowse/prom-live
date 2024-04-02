@@ -1,5 +1,6 @@
 .vscode
 /zz_testing
 /zz_archive
-./git-push.sh
+.git-push.sh
+
 
