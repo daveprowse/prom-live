@@ -13,7 +13,7 @@
 
 ## !!! THIS IS FOR EDUCATIONAL PURPOSES ONLY. ONLY RUN THIS SCRIPT ON A TEST SYSTEM !!!
 
-### TODO:  node-exporter ??, systend hardening options in service file, EnvironmentFile=/etc/default/prometheus in [Service] ???
+### TODO:  systend hardening options in service file, EnvironmentFile=/etc/default/prometheus in [Service] ???, , more bash linting...
 
 #########################################
 
@@ -45,7 +45,7 @@ echo
 sleep 3
 echo
 mkdir temp 
-cd temp
+cd temp || return
 wget https://go.dev/dl/$GO.tar.gz
 rm -rf /usr/local/go && tar -C /usr/local/lib -xzf $GO.tar.gz
 ## Export the path variable
@@ -87,7 +87,7 @@ mkdir {/etc/prometheus,/usr/share/prometheus}
 ## Download, extract, and copy Prometheus files
 wget https://github.com/prometheus/prometheus/releases/download/$PROMVERSION/$PROM.tar.gz
 tar -xvf $PROM.tar.gz 
-cd $PROM
+cd $PROM || return
 cp {prometheus,promtool} /usr/bin/
 cp -r {console_libraries/,consoles/,LICENSE,NOTICE,prometheus.yml} /etc/prometheus
 

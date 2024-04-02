@@ -4,15 +4,17 @@
 
 ## March, 2024. Written by Dave Prowse: https://prowse.tech
 
-## This script will install the Prometheus node_exporter and run it as a service
+## This script will install the Prometheus node_exporter and run it as a service. 
 
-## It is tested on Ubuntu 22.04 and Debian 12, but should work on other systemd-based Linux distros as well.
+## It is tested on Ubuntu 22.04, Debian 12, and Centos 9, but should work on other systemd-based Linux distros as well.
+
+## Check that your firewalls have port 9100 open.
 
 ## To install a newer version of the node_explorer simply change the version number in the two node_explorer variables below.
 
 ## !!! THIS IS FOR EDUCATIONAL PURPOSES ONLY. ONLY RUN THIS SCRIPT ON A TEST SYSTEM !!!
 
-## Todo: harden the service, work with port config options, more bash linting...
+## Todo: harden the service, work with port config options
 
 #########################################
 
@@ -61,7 +63,7 @@ ExecStart=/usr/local/bin/node_exporter
 WantedBy=multi-user.target
 EOF
 
-# Start Prometheus service
+# Start node_exporter service
 systemctl daemon-reload
 systemctl --now enable node_exporter
 
@@ -88,4 +90,3 @@ printf "\n\033[7;36m ENJOY! \033[0m"
 printf '%.0s\n' {1..2}
 
 fi
-

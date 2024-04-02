@@ -87,6 +87,8 @@ Here is a ready-to-go Prometheus installation in a docker container:
 
 `docker run --name prometheus -d -p 127.0.0.1:9090:9090 prom/prometheus`
 
+> More info about Prometheus in Docker: https://prometheus.io/docs/prometheus/latest/installation/
+
 > Note: If you don't have Docker installed, here is the procedure for Debian: https://docs.docker.com/engine/install/debian/.
 
 ## Manual Installation
@@ -103,5 +105,7 @@ For a basic installation of Prometheus, do the following:
   ```
 
 > Note: There may be dependency issues if you install this way. The following script is recommended as it sets up your system in a way where you can get right to work with Prometheus.
+
+> Note: To build from source, see the Prometheus repository: https://github.com/prometheus/prometheus
 
 ---
