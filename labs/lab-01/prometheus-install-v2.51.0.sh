@@ -13,7 +13,7 @@
 
 ## !!! THIS IS FOR EDUCATIONAL PURPOSES ONLY. ONLY RUN THIS SCRIPT ON A TEST SYSTEM !!!
 
-### TODO:  systend hardening options in service file, EnvironmentFile=/etc/default/prometheus in [Service] ???, , more bash linting...
+### TODO:  Go env var, systend hardening options in service file, EnvironmentFile=/etc/default/prometheus in [Service] ???, , more bash linting...
 
 #########################################
 
@@ -75,6 +75,9 @@ EOL
 echo;node -v;echo;sleep 2
 ## npm version 7 or greater is required by Prometheus. The Node JS installation should install verison 10 or higher of npm.
 
+# Export PATHs for all users
+echo "export PATH=$PATH:/usr/local/lib/nodejs/node-$VERSION-$DISTRO/bin:/usr/local/lib/go/bin" >> /etc/profile.d/path.sh
+
 # Install Prometheus
 echo
 printf "\n\033[7;32mSTARTING PROMETHEUS $PROMVERSION INSTALLATION IN 3 SECONDS! \033[0m"
@@ -135,6 +138,7 @@ cp promtool.1.gz /usr/share/man/man1
 # Clean UP!
 cd ..
 rm -rf temp/
+## exec new bash for users
 sleep 2
 
 # Completion messages
@@ -145,6 +149,8 @@ go version
 echo;echo "nodejs version=$(node -v)";echo
 prometheus --version
 printf '%.0s\n' {1..2}
+echo "To gain access to the 'node' and 'go' commands, either logout and log back in, or run 'exec bash -l'"
+echo
 printf "\nTime to complete = %s seconds" "$SECONDS"
 echo
 printf "\n\033[7;32mPROCESS COMPLETE! PROMETHEUS SHOULD NOW BE RUNNING AS A SERVICE.\033[0m"

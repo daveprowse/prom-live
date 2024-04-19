@@ -1,12 +1,4 @@
-# Monitoring Linux and Kubernetes with Prometheus in 3 hours
-
-################
-
-### !!! WORK IN PROGRESS !!!
-
-################
-
----
+# Using Prometheus to Monitor Linux and Kubernetes
 
 Copyright (c) 2024 Dave Prowse
 
@@ -18,15 +10,15 @@ Discord Server: https://discord.gg/mggw8VGzUp
 
 This is the repository for the live webinar:
 
-***Monitoring Linux and Kubernetes with Prometheus in 3 hours***
+***Using Prometheus to Monitor Linux and Kubernetes***
 
 All of the labs can be found within.
 
 Link: https://github.com/daveprowse/prom-live
 
-## Prometheus & Linux
+## Prepare Linux VMs!
 
-Although you can get away with a single Linux system for this course, I highly recommend that you ready at least two, local, Linux virtual machines in a NAT network. One to run Prometheus, and the other to be monitored. This is a best practice that will allow your systems to be somewhat isolated from your main system and network.
+Although you can get away with a single Linux system for this course, I highly recommend that you prepare at least two, local, Linux virtual machines in a NAT network. One to run Prometheus, and the other to be monitored. This is a best practice that will allow your systems to be somewhat isolated from your main system and network. Make sure that your main system can communicate with the virtual machines via SSH and web browser.
 
 The scripts and labs are designed for **Ubuntu** 22.04 Server or **Debian** 12 server (x64 platform). Work as root or as a user with sudo powers.
 
@@ -43,8 +35,11 @@ Most importantly, to install Prometheus see the first lab at [this link](./labs/
 
 You might also be interested in running, and monitoring, Kubernetes. During the course I'll be monitoring the following:
 
-- Vanilla Kubernetes cluster (three Ubuntu virtual machines). For scripts and details for installing an actual Kubernetes cluster, click [here](./z-more-info/k8s-scripts/README.md).
-- A MiniKube: For details on how to setup a Minkube, click [here](./z-more-info/minikube/minikube-install.md).
+- **MiniKube**: For details on how to setup a Minkube, click [here](./z-more-info/minikube/minikube-install.md). If you want to run minikube then I recommend doing it on a Linux system with a GUI (desktop interface).
+- **Vanilla Kubernetes cluster** (three Ubuntu virtual machines). For scripts and details for installing an actual Kubernetes cluster, click [here](./z-more-info/k8s-scripts/README.md).
+
+You can also build K8s in the following ways:
+- Quick builds for Go or Docker environments: Click [here](https://github.com/kubernetes/kubernetes)
 - AWS EKS: For more information from AWS, click [here](https://aws.amazon.com/eks/).
 - Google GKE: For more information from Google, click [here](https://cloud.google.com/kubernetes-engine).
 

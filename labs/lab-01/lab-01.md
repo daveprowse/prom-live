@@ -36,8 +36,9 @@ If you can see the version and man page and the service is active and enabled th
 
 👍 **GREAT WORK!** 👍
 
-> Note: If you wish to install a newer version of Prometheus, find out the version number and simply change the PROM and PROMVERSION variables to the new version. Example:
-> `PROM=prometheus-2.50.1.linux-amd64`
+> **IMPORTANT!**: At this point, our Prometheus server is scraping data (against itself for now) and will continue to do so until you stop the service or shut down the server.
+
+> Note: If you wish to install a newer version of Prometheus, find out the version number and simply change the PROM and PROMVERSION variables to the new version.
 
 ---
 
@@ -58,6 +59,8 @@ At any time, if you want to work with Prometheus manually, do the following:
 > Test it with `curl http://127.0.0.1:9090`
 >
 > Note: Make sure that cockpit.socket is disabled! (It uses the same port.) `sudo systemctl --now disable cockpit.service`
+>
+> Note: To make use of the `node` and `go` commands, either logout and log back in or issue the `exec bash -l` command.
 
 ## Package Manager Installation
 
@@ -104,8 +107,39 @@ For a basic installation of Prometheus, do the following:
   /prometheus --help
   ```
 
-> Note: There may be dependency issues if you install this way. The following script is recommended as it sets up your system in a way where you can get right to work with Prometheus.
+> Note: There may be dependency issues if you install this way on an Ubuntu or Debian server. The previous script is recommended as it sets up your system in a way where you can get right to work with Prometheus.
 
 > Note: To build from source, see the Prometheus repository: https://github.com/prometheus/prometheus
+
+## Windows and macOS
+
+I do not have a script for Windows or macOS but you can download Prometheus for those OSes from https://prometheus.io/download/.
+
+- Unzip (or untar) the file.
+- Access the newly created directory.
+- Issue the following command to run Prometheus:
+
+  `./prometheus`
+
+  That should run the server and you can access it from `http://127.0.0.1:9090` or `http://localhost:9090`.
+
+- To stop the server press `Ctrl + C`.
+
+The configuration file (prometheus.yml) is located within the same directory as the Prometheus executable.
+
+> Note: This is an easy way to run and learn about Prometheus but will not be feasible in a real-world situation. In the field you will want to run it in a Linux server or in a Docker container.
+
+### Homebrew and Chocolatey
+
+You could also install Prometheus to macOS and run it as a service using Homebrew:
+
+- `brew install prometheus`
+- `brew services start prometheus`
+
+The configuration file would be stored in: 
+
+`/opt/homebrew/etc/prometheus.yml`
+
+I don't recommend the Chocolatey install of Prometheus for Windows. As of the writing of this document Chocolatey carries a much older version.
 
 ---

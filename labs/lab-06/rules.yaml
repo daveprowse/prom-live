@@ -1,0 +1,5 @@
+groups:
+  - name: node_rules
+    rules:
+      - alert: host-is-down
+        expr: up{job="node"} ==0
