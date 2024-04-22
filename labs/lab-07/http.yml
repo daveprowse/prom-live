@@ -8,8 +8,8 @@ spec:
   selector:
     app: httpd_app
   ports:
-    - port: 80
-      targetPort: 8080
+    - port: 8080
+      targetPort: 80
       nodePort: 32321
 ---
 apiVersion: apps/v1

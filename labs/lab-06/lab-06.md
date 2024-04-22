@@ -39,7 +39,7 @@ You should now see the new dashboard but it won't show any metrics until we conf
 
 Add the following job:
 
-```yaml
+```yml
   - job_name: node
     static_configs:
       - targets: ['<ip_address>:9100']

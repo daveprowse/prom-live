@@ -6,7 +6,7 @@ In this lab we will:
 - Connect to Prometheus and Start Monitoring.
 - Connect to Grafana Dashboards and monitor with alerts.
 
-> Note: This is the most complex lab so far. Take it slow!
+> Note: This is the most complex and massive lab so far. Take it slow!
 
 ## Install Prometheus and Grafana to a Kubernetes cluster using Helm
 
@@ -166,17 +166,17 @@ In the expression field type the following query:
 
 View the content in Table mode.
 
-You should see a whole boatload of metrics that come from the *kube-state-metrics* container. These metrics (and others) are all built into the Prometheus stack that we installed. (Yet another reason to use this Helm chart.)
+You should see a whole boatload of metrics that come from the *kube-state-metrics* container (note the IP of that container). These metrics (and others) are all built into the Prometheus stack that we installed. (Yet another reason to use this Helm chart.)
 
 Now issue the following query:
 
 `kube_pod_ips`
 
-Review the Ip addresses used by the controller and workers, and the containers.
+Review the IP addresses used by the controller and workers, and the containers.
 
 View the "Alerts" section. Bask in the glory of pre-built alerts!
   
-## Connnect to Grafana Dashboards, and monitor with alerts
+## Connnect to Grafana Dashboards, and Monitor
 
 Now, let's connect to the Grafana server from the browser. Remember that we are simply connecting via port 80. In the field you will want to incorporate TLS on the front-end so that you have an extra layer of security for your Grafana server.
 
@@ -202,11 +202,129 @@ Let's take a look at a few of the built-in dashboards. Take a minute to examine 
 
 *♥️  Shout out to the Prometheus Community! ♥️*
 
+### Examine Kubelet Metrics
 
+On your Kubernetes controller run the following command:
 
-## More to come!
+`kubectl get nodes -o wide`
+
+This should show the controller IP address (or minikube IP address if you are using minikube).
+
+Now, attempt to query the main Prometheus metrics for that IP address:
+
+`curl http://<ip_address>/metrics`
+
+This should show the metrics for Prometheus that are being scraped.
+
+Now, find out the IP address of the container that is providing kubelet metrics:
+
+`kubectl --namespace prometheus get pods -l "release=stable" -o wide`
+
+> Note: This is a formal way of issuing the command. Lots of abbreviations and truncations you can do!
+
+You should see all pods that are running including one called *stable-kube-state-metrics*. Look at the IP address that this is being served on. Then, curl that Ip address on port 8080 (the default for this Prometheus stack). Example:
+
+`curl http://192.168.86.161:8080/metrics | less`
+
+That's a lot of metrics. Effectively, these are what Prometheus is scraping from and displaying when you run PromQL queries in the web UI. They are also what are displayed in the Grafana dashboards.
+
+**Again, it is the legend.**
+
+### Examine Kubelet Metrics in Grafana
+
+Open the following dashboard:
+
+Kuberetes / Kubelet
+
+Spend a minute looking at the gauges and counters in the dashboard.
+
+This is a pretty good representation of the important metrics that Prometheus is scraping from your kubelet. You should see:
+
+- Running Kubelets
+- Running Pods
+- Running Containers
+- Operations per second (known as ops/s) which will count total ops, error rate, and more
+- Storage operation inforamtion
+
+This is a great first stop to see the health of your kubelet.
+
+### Deploy a Web Server to the Cluster and Monitor
+
+Now, let's deploy a basic http web server to the Kubernetes cluster and monitor it from Grafana.
+
+> Note: This lab may require additional configurations for minikube users.
+
+- First, create a new namespace on your K8s controller (or minikube):
+  - `kubectl create ns http`
+- View it and verify that it was created:
+  - `kubectl get ns`
+- Copy the `http.yml` file to your controller and create a pod based on that config:
+  - `kubectl apply -f http.yml`
+- Verify that all pods are running before continuing:
+  - `kubectl get all -n http`
+
+> Note: this may take a minute to complete because it has to fetch and install the web server.
+
+When done, it should look similar to this:
+
+```console
+sysadmin@controller:~$ kubectl get all -n http
+NAME                                    READY   STATUS    RESTARTS   AGE
+pod/httpd-deployment-67fcb6ffc9-lmh6r   1/1     Running   0          48s
+pod/httpd-deployment-67fcb6ffc9-p6xgv   1/1     Running   0          48s
+
+NAME                    TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+service/httpd-service   NodePort   10.110.132.145   <none>        8080:32321/TCP   48s
+
+NAME                               READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/httpd-deployment   2/2     2            2           48s
+
+NAME                                          DESIRED   CURRENT   READY   AGE
+replicaset.apps/httpd-deployment-67fcb6ffc9   2         2         2       48s
+```
+
+Make note of the ports being used by *service/httpd-service* - specifically the second port (in this case port 32321). Try connecting to the web server on that port using the controller node's main IP address. For example:
+
+`curl http://10.42.88.100:32321`
+
+If the return message says that "It works!" then you are good.
+
+Now view that namespace in Grafana. Go to the dashboard:
+
+- Kubernetes / Compute Resources / Workload
+
+Then, change the namespace dropdown to *http*.
+
+You should see the CPU usage (and quota) for that namespace.
+
+Add a threshold for alerts:
+- Click the edit (3 dots) button and select edit.
+- Scroll down to Thresholds
+- Add one at the level 3.
+
+Run a couple tests against the web server service (from within the cluster or from without). For example:
+
+`ab -n 1000000 -c 1000 http://10.42.88.100:32321/index.html`
+
+View the change in the Grafana dashboard. Keep in mind that there might be a delay. Any thresholds that you set should start setting off alerts as well.
+
+> Note: You can see this activity from a Linux point of view by opening the `top` program on the K8s controller and looking for the *ksoftirqd/3* process.
+
+Also check out the following dashboards:
+
+- Kubernetes / Compute Resources / Namespaces (Workloads)
+- Kubernetes / Compute Resources / Cluster
+- Alertmanager / Overview
+
+Boom! You are monitoring Kubernetes!
+
+---
+You can use several other built-in dashboards to further monitor the service, pods, namespace, and so on. This is going to work in essentially the same manner for other applications. However, if you are creating your own applications, you will often need to configure the scraping of metrics as well.
 
 ---
 ## Extra Credit
 
-Solo Grafana install with Helm: https://grafana.com/docs/grafana/latest/setup-grafana/installation/helm/
+- Solo Grafana install with Helm: https://grafana.com/docs/grafana/latest/setup-grafana/installation/helm/
+- Learn more about the Prometheus Certification: https://training.linuxfoundation.org/certification/prometheus-certified-associate/
+- Consider these other tools for stress testing Kubernetes: 
+  - K6, JMeter, Locust, Siege, Gatling, Kube-burner, and PowerfulSeal.

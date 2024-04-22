@@ -54,7 +54,7 @@ Now, make sure that the "Enable autocomplete" checkbox is checked. This will giv
 
 Try another expression:
 
-`http_requests_total`
+`prometheus_http_requests_total`
 
 As you type, the web UI should guess at what you need and should list the expression we want at the very top.
 
@@ -62,7 +62,7 @@ Press `enter` to accept its suggestion, or arrow to the suggestion that you want
 
 Press `enter` again to "Execute" the query. 
 
-You should see a lot of results. In Table mode, scroll down to the handler named "/api/v1/query". That metric should show approximately 18.
+You should see a lot of results. In Table mode, scroll down to the handler named "/api/v1/query". That metric should show several results.
 
 Scroll down to the handler named "/graph". That should have several requests. It is the main web page that we are working at.
 

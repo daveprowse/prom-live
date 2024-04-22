@@ -35,8 +35,9 @@ Most importantly, to install Prometheus see the first lab at [this link](./labs/
 
 You might also be interested in running, and monitoring, Kubernetes. During the course I'll be monitoring the following:
 
-- **MiniKube**: For details on how to setup a Minkube, click [here](./z-more-info/minikube/minikube-install.md). If you want to run minikube then I recommend doing it on a Linux system with a GUI (desktop interface).
 - **Vanilla Kubernetes cluster** (three Ubuntu virtual machines). For scripts and details for installing an actual Kubernetes cluster, click [here](./z-more-info/k8s-scripts/README.md).
+
+- **MiniKube**: For details on how to setup a Minkube, click [here](./z-more-info/minikube/minikube-install.md). If you want to run minikube then I recommend doing it on a Linux system with a GUI (desktop interface).
 
 You can also build K8s in the following ways:
 - Quick builds for Go or Docker environments: Click [here](https://github.com/kubernetes/kubernetes)
