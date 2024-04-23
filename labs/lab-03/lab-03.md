@@ -81,7 +81,7 @@ Before we can create a dashboard we have to set up a data source. The data sourc
 
 Now, let's create a basic dashboard!
 
-1. Click Dashboards in the left hand menu.
+1. Click Dashboards in the left hand menu. (Click the three-horizontal-line menu button if it isn't there.)
 2. Click "+ Create Dashboard"
 3. Click "+ Add visualization"
 4. Select your new Prometheus data source. (It should be called "prometheus-1).
@@ -90,15 +90,15 @@ Boom! Done. You should now see the new dashboard. (Possibly with a single metric
 
 ### Add Basic Queries
 
-Examine the "Query" section of the dashboard below the graphing area. 
-
-To add a query and expression click the "+ Add query" button. 
+Examine the "Query" section of the dashboard below the graphing area.
 
 Add the following:
 
 - `up`
 - `process_resident_memory_bytes`
 - `process_cpu_seconds_total`
+
+> Note: To create additional queries and expressions click the "+ Add query" button.
 
 When you are finished, scroll up and click "Run queries".
 

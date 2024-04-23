@@ -82,10 +82,9 @@ This runs the web server and it should be accessible.
 
 > Note: The process doesn't fork, so you will need to open another terminal to work with the system further. That is why a terminal multiplexer was recommended previously.
 
-Check the web page that is being served:
+Check the web page that is being served locally:
 
-- Locally: `curl http://localhost:8001`
-- Remotely: `curl http://<ip_address>:8001`
+- `curl http://localhost:8001`
 
 ## Scrape Metrics!
 

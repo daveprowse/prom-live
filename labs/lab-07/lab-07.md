@@ -130,7 +130,7 @@ Service editing:
 IP address patching:
 
 - Now, if you still don't have associated IP addresses, or if you skipped the service editing step, then associate the IP address of the Kubernetes controller with both services:
-  - `kubectl patch svc stable-kube-prometheus-sta-prometheus -n prometheus -p '{"spec": {"type": "LoadBalancer", "externalIPs":["<ip_address"]}}'`
+  - `kubectl patch svc stable-kube-prometheus-sta-prometheus -n prometheus -p '{"spec": {"type": "LoadBalancer", "externalIPs":["<ip_address>"]}}'`
   - `kubectl patch svc stable-grafana -n prometheus -p '{"spec": {"type": "LoadBalancer", "externalIPs":["<ip_address>"]}}'`
    > Note: Remember to replace `<ip_address>` with the IP address of your Kubernetes controller!
 
@@ -234,7 +234,7 @@ That's a lot of metrics. Effectively, these are what Prometheus is scraping from
 
 Open the following dashboard:
 
-Kuberetes / Kubelet
+Kubernetes / Kubelet
 
 Spend a minute looking at the gauges and counters in the dashboard.
 
@@ -300,9 +300,9 @@ You should see the CPU usage (and quota) for that namespace.
 Add a threshold for alerts:
 - Click the edit (3 dots) button and select edit.
 - Scroll down to Thresholds
-- Add one at the level 3.
+- Add one at the level 2.
 
-Run a couple tests against the web server service (from within the cluster or from without). For example:
+Run a couple tests against the web server service (from within a worker in the cluster or from without). For example:
 
 `ab -n 1000000 -c 1000 http://10.42.88.100:32321/index.html`
 

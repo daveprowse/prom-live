@@ -98,6 +98,7 @@ From the remote system:
 
 - Go to your main Prometheus monitoring system's browser tab.
 - Make sure that you have the "Enable Autocomplete" checkbox checked. (It can save you a lot of time!)
+- Start typing "prom" and look at the various types of metrics that can be used in the PromUI.
 - Start a new query on the remote system. For example:
 
   `up{instance="10.42.88.2:9100",job="remote-systems"}`
@@ -110,16 +111,18 @@ From the remote system:
 
 ## Query the Remote System from Grafana
 
-Go to your main Grafana browser tab and access the dashboard you created in a previous lab.
+Go to your main Grafana browser tab and access the dashboard you created in a previous lab. You should have a panel up and running.
 
-- Create a new query:
+- Create a new query:  
   - Click the "Add" button.
   - Select "Visualization".
   - In the query section, click "+ Add query".
   - This time, code the query by clicking the "Code" button. Add the following gauge:
     `process_resident_memory_bytes{instance="<ip_address>:9100",job="remote-systems"}`
     > Note: Use auto-completion as much as possible.
-- Save the Dashboard.
+- Run the query.
+- Change the visualization by clicking the "Time series" dropdown menu and selecting "Gauge". (When you have an extra minute, take a look at the different measurement types you can select from.)
+- Apply (or Save) the Dashboard.
 - View your results.
 
 This will create a new panel (graph) where you can view the results.

@@ -10,6 +10,8 @@ In this lab we will:
 - Configure and view an alert
 - (Optional) Install the Apache exporter
 
+> Note: This is a large lab. Take it slow, and take breaks as necessary.
+
 ## Install the node_exporter Grafana Dashboard
 
 Let's install the node_exporter dashboard for Grafana into our main Prometheus monitoring system.
@@ -156,7 +158,7 @@ Let's configure a very basic alert. We want to be notified if one of the systems
 
 ### Build and Configure Rules/Alerts
 
-Create a file called `rules.yml` and add the following code:
+With sudo, create a file called `rules.yml` and add the following code:
 
 ```yaml
 groups:
