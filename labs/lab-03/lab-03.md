@@ -65,9 +65,9 @@ In this section we will:
   
 ### Configure a Data Source
 
-Before we can create a dashboard we have to set up a data source. The data source will be Prometheus. During this process, Grafana will query the Prometheus API. 
+Before we can create a dashboard we have to set up a data source. The data source will be Prometheus. During this process, Grafana will query the Prometheus API.
 
-- Click "Data sources" in the left-hand menu.
+- In the main left-hand menu, go to **Connections > Data sources**.
 - Click the button "+ Add new data source".
 - Select Prometheus.
 - In Settings, under Connection, enter the URL to your Prometheus server. 
