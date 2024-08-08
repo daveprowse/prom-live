@@ -4,7 +4,7 @@
 
 ## March, 2024. Written by Dave Prowse: https://prowse.tech
 
-## This script will install Prometheus on Debian 12 or Ubuntu 22.04 x64 systems.
+## This script will install Prometheus on Debian 12 or Ubuntu 22.04/24.04 x64 systems.
 ### It can also work with CentOS but you may have to run this command: 'chcon -t bin_t '/usr/bin/prometheus'
 ## Includes Go and NodeJS.
 ## Prometheus will be set up as a service that runs automatically.
@@ -86,7 +86,7 @@ echo;sleep 3;echo
 groupadd --system prometheus
 useradd -s /sbin/nologin --system -g prometheus prometheus
 mkdir -p /var/lib/prometheus/metrics2
-mkdir {/etc/prometheus,/usr/share/prometheus}
+mkdir -p {/etc/prometheus,/usr/share/prometheus/web}
 ## Download, extract, and copy Prometheus files
 wget https://github.com/prometheus/prometheus/releases/download/$PROMVERSION/$PROM.tar.gz
 tar -xvf $PROM.tar.gz 
@@ -115,7 +115,8 @@ ExecStart=/usr/bin/prometheus $ARGS \
 --config.file /etc/prometheus/prometheus.yml \
 --storage.tsdb.path /var/lib/prometheus/ \
 --web.console.templates=/etc/prometheus/consoles \
---web.console.libraries=/etc/prometheus/console_libraries
+--web.console.libraries=/etc/prometheus/console_libraries \
+--web.local-assets="/usr/share/prometheus/web"
 ExecReload=/bin/kill -HUP $MAINPID
 TimeoutStopSec=20s
 SendSIGKILL=no

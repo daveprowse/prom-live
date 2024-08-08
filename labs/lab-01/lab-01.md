@@ -6,7 +6,7 @@ There are a variety of ways to install Prometheus. For example, you can do a bas
 
 ## Scripted Installation
 
-The included `prometheus-install` script is designed for Ubuntu 22.04 Server and Debian 12 Server (x64 platform) and has been tested on both.
+The included `prometheus-install` script is designed for Ubuntu 22.04/24.04 Server and Debian 12 Server (x64 platform) and has been tested on both.
 
 > IMPORTANT! This script is designed to install newer versions of Prometheus. However, the version installed may not be an LTS version, and it may have compatibility issues with some Linux distros and with some Prometheus add-ons and graphing utilities.
 
