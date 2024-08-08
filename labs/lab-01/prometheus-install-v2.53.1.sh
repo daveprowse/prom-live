@@ -115,8 +115,7 @@ ExecStart=/usr/bin/prometheus $ARGS \
 --config.file /etc/prometheus/prometheus.yml \
 --storage.tsdb.path /var/lib/prometheus/ \
 --web.console.templates=/etc/prometheus/consoles \
---web.console.libraries=/etc/prometheus/console_libraries \
---web.local-assets="/usr/share/prometheus/web"
+--web.console.libraries=/etc/prometheus/console_libraries
 ExecReload=/bin/kill -HUP $MAINPID
 TimeoutStopSec=20s
 SendSIGKILL=no
