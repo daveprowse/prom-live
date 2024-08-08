@@ -2,7 +2,7 @@
 
 Instrumentation is the ability to monitor and measure the level of a product’s performance. Let's show an example of instrumentation for a basic web server written in Python.
 
-> Note: This lab assumes an Ubuntu Server or Debian Server.
+> Note: This lab assumes an Ubuntu Server or Debian Server. `tmux` or a similar terminal multiplexer is recommended. 
 
 In this lab we will:
 
@@ -23,6 +23,8 @@ Typical installations of the Python client library use pip. To find out if you h
 If it is not installed, install it with the following command:
 
 `sudo apt install pip -y`
+
+> Note: Make sure that your system is updated before installing pip.
 
 To install the Python client library use the following command:
 
@@ -59,14 +61,18 @@ Add the host with a new job:
 
 ```yaml
   - job_name: webserver
-    static configs:
+    static_configs:
     - targets:
       - localhost:8000
 ```
 
-> Note: If monitoring a remote system, replace `localhost` with the IP address of your system. Going forward, I won't note this anymore but instead will use `<ip_address>` as the placeholder.
+> Note: If monitoring a remote system, replace `localhost` with the IP address of your system. Going forward, I won't note this anymore but instead will use `<ip_address>` as the placeholder. (You can opt to use double quotes `""` or not.)
+
+> Note: Be careful with the syntax, it must be exact. For example, `static_configs:` has an underscore between the words. If something like this is omitted, the configuration will break, and the prometheus service will fail.
 
 Save the file and restart the Prometheus service.
+
+`sudo systemctl restart prometheus`
 
 > Note: Did we have to create a new job? No, but I'm trying to get you practice working with the prometheus.yml file.
 

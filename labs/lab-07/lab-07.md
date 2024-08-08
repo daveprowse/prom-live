@@ -198,7 +198,7 @@ Let's take a look at a few of the built-in dashboards. Take a minute to examine 
   - Stress out your workers!
     - Try `openssl speed -multi $(nproc --all)` to stress the CPUs
     - Or the `stress` program: `stress -c 1 -m 10`
-  - View the results in the dashboard (be ready for delays in data)
+  - View the results in the dashboard! (Be ready for delays in data - as much as 5 minutes depending on the setup and systems.)
 
 *♥️  Shout out to the Prometheus Community! ♥️*
 
@@ -244,7 +244,7 @@ This is a pretty good representation of the important metrics that Prometheus is
 - Running Pods
 - Running Containers
 - Operations per second (known as ops/s) which will count total ops, error rate, and more
-- Storage operation inforamtion
+- Storage operation information
 
 This is a great first stop to see the health of your kubelet.
 
@@ -298,15 +298,15 @@ Then, change the namespace dropdown to *http*.
 You should see the CPU usage (and quota) for that namespace.
 
 Add a threshold for alerts:
-- Click the edit (3 dots) button and select edit.
+- On the CPU Usage panel click the edit (3 dots) button and select edit.
 - Scroll down to Thresholds
-- Add one at the level 2.
+- Add one at the T1 level 2.
 
 Run a couple tests against the web server service (from within a worker in the cluster or from without). For example:
 
 `ab -n 1000000 -c 1000 http://10.42.88.100:32321/index.html`
 
-View the change in the Grafana dashboard. Keep in mind that there might be a delay. Any thresholds that you set should start setting off alerts as well.
+View the change in the Grafana dashboard. Keep in mind that there might be a delay. Any thresholds that you set should start setting off alerts as well. (Depending on the resources in your cluster you might need to select lower options, for example `ab -n 10000 -c 100`.)
 
 > Note: You can see this activity from a Linux point of view by opening the `top` program on the K8s controller and looking for the *ksoftirqd/3* process.
 
