@@ -63,12 +63,20 @@ Press `enter` to accept its suggestion, or arrow to the suggestion that you want
 Press `enter` again to "Execute" the query. 
 
 You should see a lot of results. In Table mode, scroll down to the handler named "/api/v1/query". That metric should show several results.
-
+https://prometheus.io/docs/prometheus/latest/querying/basics/
 Scroll down to the handler named "/graph". That should have several requests. It is the main web page that we are working at.
 
 Now look at "/metrics" this should have many results. Those are all of the metrics that are being scraped right now.
 
 Now view the same information in Graph mode. It will show a single number for the duration of the measurement. This combines all of the HTTP metrics listed in the table. Because this particular expression is considered to be a *counter* it is sometimes better to view the information in Table mode.
+
+Finally, let's show this as a range vector query by adding a time frame:
+
+`prometheus_http_requests_total[5m]`
+
+> NOte: This does not work in Graph mode, but only in Table mode.
+
+You should see less results than you did before because you are viewing data from a smaller range of time.
 
 ### Our Third Expression
 
@@ -82,7 +90,7 @@ However, this is not trackable or measurable over time. So click on the "Graph" 
 
 You will note that the results are from a range of time including before you issued the query! That's because Prometheus, once running, is continually scraping based on the rules that you create (or in this case, the default Prometheus rules and configuration.) If you installed Prometheus using my script, it will have initiated metric scraping immediately when the installation completed.
 
-> Note: If you are running a Linux system, consider comparing this to the amount of bytes shown for Prometheus in the `top` program. The "RES" memory should be very close to the Prometheus result.
+> Note: If you are running a Linux system, consider comparing this to the amount of bytes shown for Prometheus in the `top` program. The "RES" memory should be very close to the Prometheus result. Press `M` to sort by the Memory column or filter for Prometheus by pressing `o` and then `COMMAND=PROM`.
 
 ---
 

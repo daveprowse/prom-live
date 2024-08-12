@@ -4,7 +4,7 @@
 
 ## March, 2024. Written by Dave Prowse: https://prowse.tech
 
-## This script will install Grafana to Ubuntu 22.04 or Debian 12 and run it as a service. 
+## This script will install Grafana to Ubuntu 22.04/24.04 or Debian 12 and run it as a service. 
 
 ## Check that your firewalls have port 3000 open.
 

@@ -84,7 +84,7 @@ Now, let's create a basic dashboard!
 1. Click Dashboards in the left hand menu. (Click the three-horizontal-line menu button if it isn't there.)
 2. Click "+ Create Dashboard"
 3. Click "+ Add visualization"
-4. Select your new Prometheus data source. (It should be called "prometheus-1).
+4. Select your new Prometheus data source./
   
 Boom! Done. You should now see the new dashboard. (Possibly with a single metric called "A series".)
 
@@ -92,7 +92,7 @@ Boom! Done. You should now see the new dashboard. (Possibly with a single metric
 
 Examine the "Query" section of the dashboard below the graphing area.
 
-Add the following:
+Add the following in the Metrics browser field:
 
 - `up`
 - `process_resident_memory_bytes`
@@ -112,7 +112,7 @@ Name your new dashboard: *Linux-Dash1* and click "Save".
 
 That will save the dashboard for future use. It also removes the right-hand side menu and query area so that you can view your dashboard better. Click and drag the dashboard window to resize it.
 
-> Note: You can also hide the lef-hand menu by undocking it. Click the dock/undock icon next to "Home".
+> Note: You can also hide the left-hand menu by undocking it. Click the dock/undock icon next to "Home".
 
 ---
 
