@@ -11,6 +11,8 @@ class MyHandler(http.server.BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     start_http_server(8000)
+    # Note: For remote monitoring, modify the server address 
+    # from 'localhost' to the IP address of the system.
     server = http.server.HTTPServer(('localhost', 8001), MyHandler)
     server.serve_forever()
     

@@ -8,7 +8,6 @@ In this lab we will:
 - Test against nodes and analyze the results
 - Install the alert_manager
 - Configure and view an alert
-- (Optional) Install the Apache exporter
 
 > Note: This is a large lab. Take it slow, and take breaks as necessary.
 
@@ -55,7 +54,7 @@ Restart the prometheus service.
 
 Go back to Grafana and modify the following:
 
-- Datasource = prometheus-1
+- Datasource = prometheus
 - Job = node
 - Host = *whatever host you want to monitor!*
 
@@ -95,15 +94,27 @@ Now view the dashboard again. After a short delay you should see that the CPU us
 
 Download a large file. For example, this Ubuntu .iso image.
 
-`wget https://cdimage.ubuntu.com/ubuntu-server/daily-live/current/noble-live-server-amd64.iso`
+`wget https://releases.ubuntu.com/jammy/ubuntu-22.04.4-desktop-amd64.iso`
 
 As the file is downloading, go back to the dashboard, scroll down, and look at the *Network Traffic Basic* graph. It should show the amount of data that is being transmitted per second. (For example, 200 Mb/s.) Refresh the dashboard if necessary.
 
 ### Apache ab Test
 
-Install the Apache web server to both of your Linux systems.
+Install the Apache web server to the system to be monitored.
 
 `sudo apt install apache2 -y`
+
+Enable and run the Apache service:
+
+`sudo systemctl --now enable apache2`
+
+Check it to make sure it is active and running:
+
+`systemctl status apache2`
+
+If you have more than one system, install the Apache Utilities to the monitoring system.
+
+`sudo apt install apache2-utils -y`
 
 On the monitoring system, run the `ab` command to simulate HTTP queries to the second system (the one to be monitored). For example:Why re-create the wheel? (Or gauge as the case may be :) )
 
@@ -114,6 +125,10 @@ On the monitoring system, run the `ab` command to simulate HTTP queries to the s
 Go to the main monitoring system's Grafana dashboard and view the *CPU Busy* and *Sys Load* gauges (as well as the *CPU Basic* graph). These should start spiking very quickly. If it peaks to 100% and won't lessen, consider changing the `-n` parameter to something less.
 
 > Note: If you are not receiving results, change your time frame to a minute or less and/or refresh the dashboard.
+
+To really flood the CPU, try increasing the options:
+
+`ab -n 10000000 -c 1000 http://10.42.88.2:80/index.html`
 
 While that is a good test of the system load, it doesn't really test the Apache web server itself. That is for later!
 
@@ -158,7 +173,7 @@ Let's configure a very basic alert. We want to be notified if one of the systems
 
 ### Build and Configure Rules/Alerts
 
-With sudo, create a file called `rules.yml` and add the following code:
+With sudo, create a file in `'etc/prometheus` called `rules.yml` and add the following code:
 
 ```yaml
 groups:
@@ -168,7 +183,7 @@ groups:
         expr: up{job="node"} == 0
 ```
 
-Save the file to `/etc/prometheus`
+Save the file.
 
 > Note: If you are running Prometheus manually, save the rules file to wherever you extracted Prometheus.
 
@@ -176,11 +191,15 @@ Now, point to that rules file from the prometheus configuration file.
 
 - Open prometheus.yml
 - Find the `rule_files` section.
-- Change **"first_rules.yml"** to **"/etc/prometheus/rules.yml"** and uncomment it.
+- Change `first_rules.yml` to `/etc/prometheus/rules.yml` and uncomment it.
 
 Restart the prometheus and alertmanager services:
 
 `sudo systemctl restart {alertmanager,prometheus}`
+
+Check them to make sure they are active:
+
+`systemctl status {alertmanager,prometheus}`
 
 ### View the new Alert
 
@@ -200,8 +219,12 @@ Now, view the Alert in the Prometheus web UI again. It should show one firing al
 
 ## (Optional Extra Credit) Install the Apache exporter
 
+**Difficulty level: Advanced**
+
 https://github.com/Lusitaniae/apache_exporter
 
 https://grafana.com/grafana/dashboards/3894-apache/
+
+This exporter and the corresponding dashboard will require some work on your part!
 
 ---

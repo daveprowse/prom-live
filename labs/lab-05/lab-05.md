@@ -2,7 +2,7 @@
 
 Instrumentation is the ability to monitor and measure the level of a product’s performance. Let's show an example of instrumentation for a basic web server written in Python.
 
-> Note: This lab assumes an Ubuntu Server or Debian Server. `tmux` or a similar terminal multiplexer is recommended. 
+> Note: This lab assumes an Ubuntu Server or Debian Server. `tmux` or a similar terminal multiplexer is recommended.
 
 In this lab we will:
 
@@ -91,6 +91,8 @@ This runs the web server and it should be accessible.
 Check the web page that is being served locally:
 
 - `curl http://localhost:8001`
+
+> Note: type the actual IP address instead of `localhost` if you modified it in the Python script.
 
 ## Scrape Metrics!
 

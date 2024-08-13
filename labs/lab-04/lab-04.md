@@ -35,6 +35,7 @@ Install the node_exporter to whatever other systems you wish. You can even insta
 > Note: To install manually, see the following links:
 > - https://prometheus.io/download/
 > - https://github.com/prometheus/node_exporter 
+> - If you need to install to a macOS system, you will need the "Darwin"-based node-exporter binary.
 
 ## Modify the Configuration File
 
@@ -106,6 +107,9 @@ From the remote system:
   > Note: Replace the IP address with the IP address of your remote system.
 
 - View the results. You should see two dips in the line graph. These should coincide with the time that you stopped the node_exporter service and the time when you stopped the process later on.
+- Run another query:
+
+  `process_cpu_seconds_total{instance="<ip_address_of_remote_system>",job="remote-systems"}`
 
 > Note: You probably noticed the web UI offering autocomplete suggestions for the instance and the job. Just press `enter` to accept these.
 
@@ -148,3 +152,26 @@ Check out the node_exporter man page:
 Learn more about panels and visualizations:
 
 https://grafana.com/docs/grafana/latest/panels-visualizations/
+
+**Keyboard Shortcuts**
+
+Grafana has a number of keyboard shortcuts available. Press ? on your keyboard to display all keyboard shortcuts available in your version of Grafana.
+
+    Ctrl+S: Saves the current dashboard.
+    f: Opens the dashboard finder / search.
+    d+k: Toggle kiosk mode (hides the menu).
+    d+e: Expand all rows.
+    d+s: Dashboard settings.
+    Ctrl+K: Opens the command palette.
+    Esc: Exits panel when in fullscreen view or edit mode. Also returns you to the dashboard from dashboard settings.
+
+Focused panel
+
+By hovering over a panel with the mouse you can use some shortcuts that will target that panel.
+
+    e: Toggle panel edit view
+    v: Toggle panel fullscreen view
+    ps: Open Panel Share Modal
+    pd: Duplicate Panel
+    pr: Remove Panel
+    pl: Toggle panel legend

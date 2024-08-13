@@ -2,11 +2,11 @@
 
 #########################################
 
-## March, 2024. Written by Dave Prowse: https://prowse.tech
+## Updated August, 2024. Written by Dave Prowse: https://prowse.tech
 
 ## This script will install the Prometheus node_exporter and run it as a service. 
 
-## It is tested on Ubuntu 22.04, Debian 12, and Centos 9, but should work on other systemd-based Linux distros as well.
+## It is tested on Ubuntu 22.04, Ubuntu 24.04, Debian 12, and Centos 9, but should work on other systemd-based Linux distros as well.
 
 ## Check that your firewalls have port 9100 open.
 

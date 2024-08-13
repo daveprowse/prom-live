@@ -2,7 +2,7 @@
 
 #########################################
 
-## March, 2024. Written by Dave Prowse: https://prowse.tech
+## Updated August, 2024. Written by Dave Prowse: https://prowse.tech
 
 ## This script will install Prometheus on Debian 12 or Ubuntu 22.04/24.04 x64 systems.
 ### It can also work with CentOS but you may have to run this command: 'chcon -t bin_t '/usr/bin/prometheus'

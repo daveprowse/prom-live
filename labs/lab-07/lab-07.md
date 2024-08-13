@@ -70,6 +70,9 @@ or
 
 `kubectl --namespace prometheus get pods -l "release=stable"`
 
+> Note: For minikube, use the following command to see the pods:
+> `minikube kubectl -- get pods --namespace prometheus`
+
 Take a look at the pods that have been created by the Helm chart. You should see pods for:
 
 - Prometheus itself
@@ -105,7 +108,13 @@ stable-prometheus-node-exporter           ClusterIP      10.107.8.244     <none>
 
 > Note: Your IP addresses will differ.
 
-You should be able to connect to Prometheus locally via it's ClusterIP address. For example:
+> Note: to see the IPs in minikube use the following command:
+> 
+> `minikube kubectl -- get svc -n prometheus`
+
+You should be able to connect to Prometheus locally via it's ClusterIP address. (Use the "stable-kube-prometheus-sta-prometheus" pod's IP.)
+
+For example:
 
 `curl http://10.105.51.243:9090`
 
@@ -117,40 +126,57 @@ If you have installed this stack to a cloud-based cluster (AWS, Azure, GKE, Graf
 
 If you installed to a vanilla K8s cluster or minikube then you will probably have to assign an IP to access the services (or expose the services).
 
-**Vanilla K8s**
+#### Vanilla K8s
 
-To assign IP addresses for a vanilla K8s clusters stored in the cloud, edit the appropriate services (shown below). If you have a locally running vanilla K8s cluster, then skip the service editing portion and move right to the IP address patching portion.
+You have two options to add an external IP to your Prometheus and Grafana services: the service editing option and the one-line command option.
 
-Service editing:
+*Service editing*
+
 - `kubectl edit svc stable-kube-prometheus-sta-prometheus -n prometheus`
-- Find `type: ClusterIP` and change it to: `type: LoadBalancer`
+  - Find `type: ClusterIP` and change it to: `type: LoadBalancer`
+  - Add the syntax shown below.
 - `kubectl edit svc stable-grafana -n prometheus`
-- Again, find `type: ClusterIP` and change it to: `type: LoadBalancer`
+  - Again, find `type: ClusterIP` and change it to: `type: LoadBalancer`
+  - Again, add the syntax shown below.
 
-IP address patching:
+> **Note:** If you are working on a cloud-based system, simply configuring the "ClusterIP" option is often enough. If not, follow the next step.
+ 
+- Set the IP address within the service configuration files with a new line directly under spec >  clusterIPs:
+    ```console
+    externalIPs:
+    - <ip address>
+    ```
 
-- Now, if you still don't have associated IP addresses, or if you skipped the service editing step, then associate the IP address of the Kubernetes controller with both services:
+*One-line command*
+
+- Issue the following two commands to set the External-IP address as a LoadBalancer configuration:
   - `kubectl patch svc stable-kube-prometheus-sta-prometheus -n prometheus -p '{"spec": {"type": "LoadBalancer", "externalIPs":["<ip_address>"]}}'`
   - `kubectl patch svc stable-grafana -n prometheus -p '{"spec": {"type": "LoadBalancer", "externalIPs":["<ip_address>"]}}'`
    > Note: Remember to replace `<ip_address>` with the IP address of your Kubernetes controller!
 
-> **Note:** You could also set the IP address within the service configuration files with a new line directly under spec >  clusterIPs:
-> ```console
-> externalIPs:
-> - <ip address>
-> ```
-
 Check your work with `kubectl get svc -n prometheus`. You should see the EXTERNAL-IP addresses and they should now be accessible from remote systems.
 
-**minikube**
+#### minikube
 
-Expose the Prometheus and Grafana services. Run each of the following commands in separate terminals.
+For minikube, you'll need to patch the IP addresses for the Prometheus and Grafana services and then expose those services so you can connect to them via the web browser.
 
-`minikube service stable-kube-prometheus-sta-prometheus --namespace=prometheus`
+1. Patch the IPs for Prometheus and Grafana:
 
-`minikube service stable-grafana --namespace=prometheus`
+    `minikube kubectl -- patch svc stable-kube-prometheus-sta-prometheus -n prometheus -p '{"spec": {"type": "LoadBalancer", "externalIPs":["<IP_address>"]}}'`
 
-> Note: Each one will attempt to open a web browser automatically. If not, attempt to connect manually.
+    `minikube kubectl -- patch svc stable-grafana -n prometheus -p '{"spec": {"type": "LoadBalancer", "externalIPs":["<IP_address>"]}}'`
+
+    > Note: Use the actual IP address of the system that is hosting the minikube. So remove `<IP_address>` and replace it with the actual IP address.
+
+    > Note: You could also do service editing as shown in the "Vanilla K8s" section previously.
+
+2. Expose the Prometheus and Grafana services. Run each of the following commands in separate terminals.
+
+    `minikube service stable-kube-prometheus-sta-prometheus --namespace=prometheus`
+
+    `minikube service stable-grafana --namespace=prometheus`
+
+    > Note: Each one should attempt to open a web browser automatically. If not, attempt to connect manually to the link named in the URL field that is displayed.
 
 ## Connnect to Prometheus and Start Monitoring
 
@@ -199,6 +225,7 @@ Let's take a look at a few of the built-in dashboards. Take a minute to examine 
     - Try `openssl speed -multi $(nproc --all)` to stress the CPUs
     - Or the `stress` program: `stress -c 1 -m 10`
   - View the results in the dashboard! (Be ready for delays in data - as much as 5 minutes depending on the setup and systems.)
+  - *Bonus*: Check out the stress that is being imposed on the server housing your Kubernetes cluster. Use `top` or a similar program. At this point it should be working harder!
 
 *♥️  Shout out to the Prometheus Community! ♥️*
 
@@ -300,13 +327,15 @@ You should see the CPU usage (and quota) for that namespace.
 Add a threshold for alerts:
 - On the CPU Usage panel click the edit (3 dots) button and select edit.
 - Scroll down to Thresholds
-- Add one at the T1 level 2.
+- Add one at 80% (or T1 level 2 absolute).
+- Set "Show Thresholds" as "lines".
+- Apply it to the panel.
 
 Run a couple tests against the web server service (from within a worker in the cluster or from without). For example:
 
 `ab -n 1000000 -c 1000 http://10.42.88.100:32321/index.html`
 
-View the change in the Grafana dashboard. Keep in mind that there might be a delay. Any thresholds that you set should start setting off alerts as well. (Depending on the resources in your cluster you might need to select lower options, for example `ab -n 10000 -c 100`.)
+View the change in the Grafana dashboard. Keep in mind that there might be a delay. You can also configure any thresholds that you set to set off alerts as well. (Depending on the resources in your cluster you might need to select lower options, for example `ab -n 10000 -c 100`.)
 
 > Note: You can see this activity from a Linux point of view by opening the `top` program on the K8s controller and looking for the *ksoftirqd/3* process.
 
