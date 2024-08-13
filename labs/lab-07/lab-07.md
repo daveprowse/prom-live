@@ -6,9 +6,13 @@ In this lab we will:
 - Connect to Prometheus and Start Monitoring.
 - Connect to Grafana Dashboards and monitor with alerts.
 
-> Note: This is the most complex and massive lab so far. Take it slow!
+> Note: This is the most complex and massive lab so far. Take it step-by-step!
 
-## Install Prometheus and Grafana to a Kubernetes cluster using Helm
+> Note: If you do not have a Kubernetes cluster or minikube running, see the following labs in the *z-more-info* directory:
+> - [Vanilla Kubernetes Setup](../../z-more-info/k8s-scripts/README.md)
+> - [Minikube](../../z-more-info/minikube/minikube-install.md)
+
+## Install Prometheus and Grafana to a Kubernetes Cluster using Helm
 
 The Prometheus Community maintains a group of Helm charts that can install Prometheus, node_exporter, alertmanager, kube metrics, and Grafana all at once. Instead of re-inventing the wheel, let's make use of what already exists!
 
@@ -227,7 +231,12 @@ Let's take a look at a few of the built-in dashboards. Take a minute to examine 
   - View the results in the dashboard! (Be ready for delays in data - as much as 5 minutes depending on the setup and systems.)
   - *Bonus*: Check out the stress that is being imposed on the server housing your Kubernetes cluster. Use `top` or a similar program. At this point it should be working harder!
 
+---
 *♥️  Shout out to the Prometheus Community! ♥️*
+
+https://github.com/prometheus-community
+
+---
 
 ### Examine Kubelet Metrics
 
