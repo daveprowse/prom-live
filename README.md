@@ -67,7 +67,7 @@ You could get away with using Docker for everything: A Prometheus docker image, 
 
 Here is the network diagram of systems I will be using for this course. For the most part I will be focusing on the Proxmox systems. A larger version of the image can be found in the images directory. 
 
-![Lab Setup](./images/prom-map.png)
+![Lab Setup](./images/prom-map2.png)
 
 ---
 
