@@ -13,7 +13,7 @@
 
 ## !!! THIS IS FOR EDUCATIONAL PURPOSES ONLY. ONLY RUN THIS SCRIPT ON A TEST SYSTEM !!!
 
-### TODO:  Go env var, systend hardening options in service file, EnvironmentFile=/etc/default/prometheus in [Service] ???, , more bash linting...
+### TODO:  Go env var (bash issue), DB dirs and config (data and metrics2), systend hardening options in service file, EnvironmentFile=/etc/default/prometheus in [Service] ???, , more bash linting...
 
 #########################################
 
@@ -93,10 +93,9 @@ tar -xvf $PROM.tar.gz
 cd $PROM || return
 cp {prometheus,promtool} /usr/bin/
 cp -r {console_libraries/,consoles/,LICENSE,NOTICE,prometheus.yml} /etc/prometheus
-
-## Set permissions for system accountnode_exporter-1.7.0.linux-amd64.tar.gz
+## Set permissions for system account
 chown prometheus:prometheus /usr/bin/prometheus
-chown prometheus:prometheus /var/lib/prometheus
+chown -R prometheus:prometheus /var/lib/prometheus
 chown -R prometheus:prometheus /etc/prometheus/consoles
 chown -R prometheus:prometheus /etc/prometheus/console_libraries
 
@@ -113,7 +112,7 @@ User=prometheus
 Group=prometheus
 ExecStart=/usr/bin/prometheus $ARGS \
 --config.file /etc/prometheus/prometheus.yml \
---storage.tsdb.path /var/lib/prometheus/ \
+--storage.tsdb.path /var/lib/prometheus/metrics2 \
 --web.console.templates=/etc/prometheus/consoles \
 --web.console.libraries=/etc/prometheus/console_libraries
 ExecReload=/bin/kill -HUP $MAINPID
@@ -124,9 +123,10 @@ SendSIGKILL=no
 WantedBy=multi-user.target
 EOF
 
-# Start Prometheus service
+# Start Prometheus service and re-issue ownership to database location
 systemctl daemon-reload
 systemctl --now enable prometheus
+chown -R prometheus:prometheus /var/lib/prometheus
 
 # Install Man pages - From Ubuntu
 cd ..

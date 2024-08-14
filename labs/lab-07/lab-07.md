@@ -9,8 +9,8 @@ In this lab we will:
 > Note: This is the most complex and massive lab so far. Take it step-by-step!
 
 > Note: If you do not have a Kubernetes cluster or minikube running, see the following labs in the *z-more-info* directory:
-> - [Vanilla Kubernetes Setup](../../z-more-info/k8s-scripts/README.md)
-> - [Minikube](../../z-more-info/minikube/minikube-install.md)
+  > - [Vanilla Kubernetes Setup](../../z-more-info/k8s-scripts/README.md)
+  > - [Minikube](../../z-more-info/minikube/minikube-install.md)
 
 ## Install Prometheus and Grafana to a Kubernetes Cluster using Helm
 
@@ -232,7 +232,7 @@ Let's take a look at a few of the built-in dashboards. Take a minute to examine 
   - *Bonus*: Check out the stress that is being imposed on the server housing your Kubernetes cluster. Use `top` or a similar program. At this point it should be working harder!
 
 ---
-*♥️  Shout out to the Prometheus Community! ♥️*
+*♥️  Shout out to the Prometheus Monitoring Community! ♥️*
 
 https://github.com/prometheus-community
 

@@ -48,6 +48,8 @@ You will note that you have two ways of viewing the data: Table and Graph. Table
 
 > Note: In older versions of the Web UI, "Table" was previously known as "Console".
 
+> Extra: Try the expression `prometheus_build_info` just for fun and view in Table mode.
+
 ### Our Second Expression
 
 Now, make sure that the "Enable autocomplete" checkbox is checked. This will give you autocomplete options based on what you type.
