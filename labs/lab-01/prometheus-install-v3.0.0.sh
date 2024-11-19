@@ -25,7 +25,7 @@ clear -x
 
 if [ "$(id -u)" -ne 0 ]; then echo;echo "Please run as root or with 'sudo'." >&2; echo; exit 1; fi
 
-printf "\n\033[7;31mTHIS SCRIPT WILL INSTALL PROMETHEUS %s\n\033[0m" "$PROMVERSION"
+printf "\n\033[7;31mTHIS SCRIPT WILL INSTALL PROMETHEUS %s \033[0m" "$PROMVERSION"
 printf '%.0s\n' {1..2}
 read -p "Are you sure you want to proceed? (y,n): " -r response
 printf '%.0s\n' {1..2}
@@ -35,7 +35,7 @@ printf '%.0s\n' {1..2}
 
 # Install Prometheus
 echo
-printf "\n\033[7;32mSTARTING PROMETHEUS %s\n INSTALLATION IN 3 SECONDS! \033[0m" "$PROMVERSION"
+printf "\n\033[7;32mSTARTING PROMETHEUS %s INSTALLATION IN 3 SECONDS! \033[0m" "$PROMVERSION"
 echo;sleep 3;echo
 ## Create system user and directories
 groupadd --system prometheus
@@ -98,14 +98,10 @@ sleep 2
 
 # Completion messages
 clear -x; echo; echo
-printf "If the versions of Go, NodeJS, and Prometheus are listed below, then they installed correctly."
+printf "If the Prometheus version is listed below, then it is installed correctly."
 printf '%.0s\n' {1..2}
-go version
-echo;echo "nodejs version=$(node -v)";echo
 prometheus --version
 printf '%.0s\n' {1..2}
-echo "To gain access to the 'node' and 'go' commands, either logout and log back in, or run 'exec bash -l'"
-echo
 printf "\nTime to complete = %s seconds" "$SECONDS"
 echo
 printf "\n\033[7;32mPROCESS COMPLETE! PROMETHEUS SHOULD NOW BE RUNNING AS A SERVICE.\033[0m"
