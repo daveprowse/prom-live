@@ -2,11 +2,10 @@
 
 #########################################
 
-## Updated August, 2024. Written by Dave Prowse: https://prowse.tech
+## Updated November, 2024. Written by Dave Prowse: https://prowse.tech
 
 ## This script will install Prometheus on Debian 12 or Ubuntu 22.04/24.04 x64 systems.
 ### It can also work with CentOS but you may have to run this command: 'chcon -t bin_t '/usr/bin/prometheus'
-## Includes Go and NodeJS.
 ## Prometheus will be set up as a service that runs automatically.
 
 ## This script requires that you work as `root` or with sudo capabilities. 
@@ -18,69 +17,25 @@
 #########################################
 
 # Variables
-GO=go1.22.6.linux-amd64
-GOVERSION=v1.22.6
-NODEJS=node-v20.16.0-linux-x64
-NODEJSVERSION=v20.16.0
-PROMVERSION=v2.53.1
-PROM=prometheus-2.53.1.linux-amd64
+PROMVERSION=v3.0.0
+PROM=prometheus-3.0.0.linux-amd64
 UBUNTU_MAN_VERSION=noble
 
 clear -x
 
 if [ "$(id -u)" -ne 0 ]; then echo;echo "Please run as root or with 'sudo'." >&2; echo; exit 1; fi
 
-printf "\n\033[7;31mTHIS SCRIPT WILL INSTALL GO, NODEJS, and PROMETHEUS \033[0m"
+printf "\n\033[7;31mTHIS SCRIPT WILL INSTALL PROMETHEUS %s\n\033[0m" "$PROMVERSION"
 printf '%.0s\n' {1..2}
-read -p "Are you sure? [y,n]:  " -n 1 -r
+read -p "Are you sure you want to proceed? (y,n): " -r response
 printf '%.0s\n' {1..2}
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
+if [[ $response =~ ^[Yy]$ ]]; then
 start=$SECONDS  
 printf '%.0s\n' {1..2}
 
-# Install Go 
-printf "\n\033[7;32mSTARTING GO $GOVERSION INSTALLATION IN 3 SECONDS! \033[0m"
-echo
-sleep 3
-echo
-mkdir temp 
-cd temp || return
-wget https://go.dev/dl/$GO.tar.gz
-rm -rf /usr/local/go && tar -C /usr/local/lib -xzf $GO.tar.gz
-## Export the path variable
-export PATH=$PATH:/usr/local/lib/go/bin
-## Show Go verison
-echo;go version;echo;sleep 2
-
-# Install NodeJS
-echo
-printf "\n\033[7;32mSTARTING NODE JS $NODEJSVERSION INSTALLATION IN 3 SECONDS! \033[0m"
-printf '%.0s\n' {1..2}
-sleep 3
-wget https://nodejs.org/dist/$NODEJSVERSION/$NODEJS.tar.gz
-VERSION=$NODEJSVERSION
-DISTRO=linux-x64
-mkdir -p /usr/local/lib/nodejs
-tar -xvf node-$VERSION-$DISTRO.tar.gz -C /usr/local/lib/nodejs
-## Set the environment variables in .profile
-cat >> ~/.profile << EOL
-VERSION=$NODEJSVERSION
-DISTRO=linux-x64
-export PATH=/usr/local/lib/nodejs/node-$VERSION-$DISTRO/bin:$PATH
-EOL
-## Refresh the profile
-. ~/.profile
-## Show Node JS version
-echo;node -v;echo;sleep 2
-## npm version 7 or greater is required by Prometheus. The Node JS installation should install verison 10 or higher of npm.
-
-# Export PATHs for all users
-echo "export PATH=$PATH:/usr/local/lib/nodejs/node-$VERSION-$DISTRO/bin:/usr/local/lib/go/bin" >> /etc/profile.d/path.sh
-
 # Install Prometheus
 echo
-printf "\n\033[7;32mSTARTING PROMETHEUS $PROMVERSION INSTALLATION IN 3 SECONDS! \033[0m"
+printf "\n\033[7;32mSTARTING PROMETHEUS %s\n INSTALLATION IN 3 SECONDS! \033[0m" "$PROMVERSION"
 echo;sleep 3;echo
 ## Create system user and directories
 groupadd --system prometheus
@@ -100,7 +55,7 @@ chown -R prometheus:prometheus /etc/prometheus/consoles
 chown -R prometheus:prometheus /etc/prometheus/console_libraries
 
 # Build Prometheus service
-cat > /lib/systemd/system/prometheus.service <<\EOF
+cat << "EOF" > "/lib/systemd/system/prometheus.service"
 [Unit]
 Description=Monitoring system and time series database (Prometheus)
 Documentation=https://prometheus.io/docs/introduction/overview/ man:prometheus(1)
@@ -165,4 +120,7 @@ printf "\n\033[7;36m ENJOY! \033[0m"
 
 printf '%.0s\n' {1..3}
 
+# completion of the if-else statement
+else
+  echo "Installation cancelled."
 fi

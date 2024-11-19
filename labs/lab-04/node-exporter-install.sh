@@ -2,7 +2,7 @@
 
 #########################################
 
-## Updated August, 2024. Written by Dave Prowse: https://prowse.tech
+## Updated November, 2024. Written by Dave Prowse: https://prowse.tech
 
 ## This script will install the Prometheus node_exporter and run it as a service. 
 
@@ -27,7 +27,7 @@ UBUNTU_MAN_VERSION=noble
 clear -x
 if [ "$(id -u)" -ne 0 ]; then echo;echo "Please run as root or with 'sudo'." >&2; echo; exit 1; fi
 
-printf "\n\033[7;31mTHIS SCRIPT WILL INSTALL THE PROMETHEUS NODE_EXPORTER AND RUN IT AS A SERVICE. \033[0m"
+printf "\n\033[7;31mTHIS SCRIPT WILL INSTALL THE PROMETHEUS %s\n AND RUN IT AS A SERVICE. \033[0m" "$NODE_EXPORTER_VERSION"
 printf '%.0s\n' {1..2}
 read -p "Are you sure? [y,n]:  " -n 1 -r
 printf '%.0s\n' {1..2}
@@ -48,7 +48,7 @@ cp ./$NODE_EXPORTER/node_exporter /usr/local/bin
 
 # Build node_exporter service
 useradd -rs /bin/false node_exporter
-cat > /lib/systemd/system/node_exporter.service <<\EOF
+cat << "EOF" > "/lib/systemd/system/node_exporter.service"
 [Unit]
 Description=Node Exporter 
 After=network.target
