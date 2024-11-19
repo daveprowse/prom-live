@@ -1,6 +1,6 @@
 # Using Prometheus to Monitor Linux and Kubernetes
 
-Copyright (c) 2024 Dave Prowse
+Copyright © Dave Prowse
 
 Website: https://prowse.tech
 
@@ -20,11 +20,12 @@ Link: https://github.com/daveprowse/prom-live
 
 Although you can get away with a single Linux system for this course, I highly recommend that you prepare at least two, local, Linux virtual machines in a NAT network. One to run Prometheus, and the other to be monitored. This is a best practice that will allow your systems to be somewhat isolated from your main system and network. Make sure that your main system can communicate with the virtual machines via SSH and web browser.
 
-The scripts and labs are designed for **Ubuntu** 22.04 Server or **Debian** 12 server (x64 platform). Work as root or as a user with sudo powers.
+The scripts and labs are designed for **Ubuntu** 24/04 & 22.04 Server or **Debian** 12 server (x64 platform). Remember to work as root or as a user with sudo powers.
 
 If you don't have either Debian or Ubuntu you can download them from the following links.
 
 - Debian 12 [Download](https://www.debian.org/download)
+- Ubuntu 24.04 Server [Download](https://releases.ubuntu.com/24.04/)
 - Ubuntu 22.04 Server [Download](https://releases.ubuntu.com/jammy/ubuntu-22.04.4-live-server-amd64.iso)
 
 > Note: If you choose to run Debian, make sure that you install it as a server. To do so, deselect any desktops (GNOME, KDE, etc...) during the Task Selection phase of the installation.
