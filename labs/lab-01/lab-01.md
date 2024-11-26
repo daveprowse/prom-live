@@ -16,8 +16,6 @@ Simply run the script as `root` or with `sudo`.
 
 Here's what the script will do:
 
-- Install Go
-- Install NodeJS
 - Install Prometheus
 - Configure and run Prometheus as a service
 
@@ -59,8 +57,6 @@ At any time, if you want to work with Prometheus manually, do the following:
 > Test it with `curl http://127.0.0.1:9090`
 >
 > Note: Make sure that cockpit.socket is disabled! (It uses the same port.) `sudo systemctl --now disable cockpit.service`
->
-> Note: To make use of the `node` and `go` commands, either logout and log back in or issue the `exec bash -l` command.
 
 ## Package Manager Installation
 
