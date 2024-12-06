@@ -86,7 +86,7 @@ User=prometheus
 Group=prometheus
 ExecStart=/usr/bin/prometheus $ARGS \
 --config.file /etc/prometheus/prometheus.yml \
---storage.tsdb.path /var/lib/prometheus/metrics2 \
+--storage.tsdb.path /var/lib/prometheus/metrics2
 ExecReload=/bin/kill -HUP $MAINPID
 TimeoutStopSec=20s
 SendSIGKILL=no
