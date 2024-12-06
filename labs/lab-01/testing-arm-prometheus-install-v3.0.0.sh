@@ -2,9 +2,10 @@
 
 #########################################
 
-## Updated November, 2024. Written by Dave Prowse: https://prowse.tech
+## Updated December, 2024. Written by Dave Prowse: https://prowse.tech
 
-## This script will install Prometheus on Debian 12 or Ubuntu 22.04/24.04 x64 systems.
+## This script will install Prometheus on Debian 12 or Ubuntu 22.04/24.04 systems. 
+## AMD64 and ARM64 architectures are supported.
 ### It can also work with CentOS but you may have to run this command: 'chcon -t bin_t '/usr/bin/prometheus'
 ## Prometheus will be set up as a service that runs automatically.
 
@@ -12,21 +13,21 @@
 
 ## !!! THIS IS FOR EDUCATIONAL PURPOSES ONLY. ONLY RUN THIS SCRIPT ON A TEST SYSTEM !!!
 
-### TODO:  Go env var (bash issue), DB dirs and config (data and metrics2), systend hardening options in service file, EnvironmentFile=/etc/default/prometheus in [Service] ???, , more bash linting...
+### TODO: systend hardening options in service file, EnvironmentFile=/etc/default/prometheus in [Service] ???, , more bash linting...
 
 #########################################
 
 # Variables
-PROMVERSION=v3.0.0
-PROM_AMD64=prometheus-3.0.0.linux-amd64
-PROM_ARM64=prometheus-3.0.0.linux-arm64
+PROMVERSION=v3.0.1
+PROM_AMD64=prometheus-3.0.1.linux-amd64
+PROM_ARM64=prometheus-3.0.1.linux-arm64
 UBUNTU_MAN_VERSION=noble
 
 clear -x
 
 if [ "$(id -u)" -ne 0 ]; then echo;echo "Please run as root or with 'sudo'." >&2; echo; exit 1; fi
 
-printf "\n\033[7;31mTHIS SCRIPT WILL INSTALL PROMETHEUS %s \033[0m" "$PROMVERSION"
+printf "\n\033[7;31mTHIS SCRIPT WILL INSTALL PROMETHEUS TO YOUR LINUX SYSTEM! %s \033[0m" "$PROMVERSION"
 printf '%.0s\n' {1..2}
 read -p "Are you sure you want to proceed? (y,n): " -r response
 printf '%.0s\n' {1..2}
@@ -44,9 +45,9 @@ useradd -s /sbin/nologin --system -g prometheus prometheus
 mkdir -p /var/lib/prometheus/metrics2
 mkdir -p {/etc/prometheus,/usr/share/prometheus/web}
 ## Download, extract, and copy Prometheus files
-### Get CPU architecture using 'uname -m'
+### Determine CPU architecture using 'uname -m'
 arch=$(uname -m)
-### if statement to check architecture and install corresponding package
+### if statement to install corresponding package based on architecture determination
 if [ "$arch" == "x86_64" ]; then
     echo "Installing package for x86_64 architecture..."
     # Replace "package_name_x86_64" with the actual package name for x86_64
@@ -61,15 +62,16 @@ elif [ "$arch" == "aarch64" ]; then
     cd $PROM_ARM64 || return
 else
     echo "Unsupported architecture: $arch"
+    printf "Go to https://prometheus.io/download/ to download other binaries."
+    printf '%.0s\n' {1..2}
+    exit 1
 fi
-
+### Copy Prometheus files to system directories
 cp {prometheus,promtool} /usr/bin/
 cp -r {console_libraries/,consoles/,LICENSE,NOTICE,prometheus.yml} /etc/prometheus
-## Set permissions for system account
+## Set permissions for prometheus system account
 chown prometheus:prometheus /usr/bin/prometheus
 chown -R prometheus:prometheus /var/lib/prometheus
-chown -R prometheus:prometheus /etc/prometheus/consoles
-chown -R prometheus:prometheus /etc/prometheus/console_libraries
 
 # Build Prometheus service
 cat << "EOF" > "/lib/systemd/system/prometheus.service"
@@ -85,8 +87,6 @@ Group=prometheus
 ExecStart=/usr/bin/prometheus $ARGS \
 --config.file /etc/prometheus/prometheus.yml \
 --storage.tsdb.path /var/lib/prometheus/metrics2 \
---web.console.templates=/etc/prometheus/consoles \
---web.console.libraries=/etc/prometheus/console_libraries
 ExecReload=/bin/kill -HUP $MAINPID
 TimeoutStopSec=20s
 SendSIGKILL=no
