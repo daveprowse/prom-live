@@ -27,7 +27,7 @@ clear -x
 
 if [ "$(id -u)" -ne 0 ]; then echo;echo "Please run as root or with 'sudo'." >&2; echo; exit 1; fi
 
-printf "\n\033[7;31mTHIS SCRIPT WILL INSTALL PROMETHEUS TO YOUR LINUX SYSTEM! %s \033[0m" "$PROMVERSION"
+printf "\n\033[7;31mTHIS SCRIPT WILL INSTALL PROMETHEUS %s TO YOUR LINUX SYSTEM! \033[0m" "$PROMVERSION"
 printf '%.0s\n' {1..2}
 read -p "Are you sure you want to proceed? (y,n): " -r response
 printf '%.0s\n' {1..2}
