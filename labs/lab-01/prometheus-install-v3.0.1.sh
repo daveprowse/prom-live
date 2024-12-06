@@ -4,7 +4,7 @@
 
 ## Updated December, 2024. Written by Dave Prowse: https://prowse.tech
 
-## This script will install Prometheus on Debian 12 or Ubuntu 22.04/24.04 systems. 
+## This script will install Prometheus on Ubuntu 22.04/24.04 or Debian 12 systems. 
 ## AMD64 and ARM64 architectures are supported.
 ### It can also work with CentOS but you may have to run this command: 'chcon -t bin_t '/usr/bin/prometheus'
 ## Prometheus will be set up as a service that runs automatically.
@@ -66,9 +66,9 @@ else
     printf '%.0s\n' {1..2}
     exit 1
 fi
-### Copy Prometheus files to system directories
+## Copy Prometheus files to system directories
 cp {prometheus,promtool} /usr/bin/
-cp -r {console_libraries/,consoles/,LICENSE,NOTICE,prometheus.yml} /etc/prometheus
+cp -r {LICENSE,NOTICE,prometheus.yml} /etc/prometheus
 ## Set permissions for prometheus system account
 chown prometheus:prometheus /usr/bin/prometheus
 chown -R prometheus:prometheus /var/lib/prometheus
