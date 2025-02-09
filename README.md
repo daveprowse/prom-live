@@ -36,6 +36,10 @@ Most importantly, to install Prometheus see the first lab at [this link](./labs/
 
 You might also be interested in running, and monitoring, Kubernetes. During the course I'll be monitoring the following:
 
+- **MicroK8s Cluster** (three Ubuntu virtual machines). This is my main setup for this course. It's quite easy to install. For more information click [here](./z-more-info/microk8s/microk8s-notes.md).
+
+You could also set up Kubernetes with one of the following options:
+
 - **Vanilla Kubernetes cluster** (three Ubuntu virtual machines). For scripts and details for installing an actual Kubernetes cluster, click [here](./z-more-info/k8s-scripts/README.md).
 
 - **MiniKube**: For details on how to setup a Minkube, click [here](./z-more-info/minikube/minikube-install.md). If you want to run minikube then I recommend doing it on a Linux system with a GUI (desktop interface).
@@ -47,7 +51,7 @@ You can also build K8s in the following ways:
 
 > Note: You can use other tools such as kind, kOps, and Karpenter, as well as other cloud-based services (Azure, DO, Linode), but I won't be covering those in the course.
 
-> Note: I build my K8s clusters on AWS and Google with Terraform. If you are interested in using Terraform to build K8s, see the following documentation:
+> Note: I build some of my customer K8s clusters on AWS and Google with Terraform. If you are interested in using Terraform to build K8s, see the following documentation:
 > - AWS EKS: [Link](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_cluster) 
 > - Google GKE: [Link](https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/using_gke_with_terraform)
 > - You will also want to install `kubectl` on your main system: [Link](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)

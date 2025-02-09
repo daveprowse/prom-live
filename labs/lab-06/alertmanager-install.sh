@@ -14,13 +14,13 @@
 
 ## !!! THIS IS FOR EDUCATIONAL PURPOSES ONLY. ONLY RUN THIS SCRIPT ON A TEST SYSTEM !!!
 
-## Todo: harden the service, work with port config options, add enter key to confirmation
+## Todo: Add ARM version and variables, harden the service, work with port config options, add enter key to confirmation
 
 #########################################
 
 # Variables
-ALERTMANAGER_VERSION=v0.27.0
-ALERTMANAGER=alertmanager-0.27.0.linux-amd64
+ALERTMANAGER_VERSION=v0.28.0
+ALERTMANAGER=alertmanager-0.28.0.linux-amd64
 UBUNTU_MAN_VERSION=noble
 
 # sudo check and confirmation

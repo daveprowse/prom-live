@@ -14,7 +14,7 @@
 
 ## !!! THIS IS FOR EDUCATIONAL PURPOSES ONLY. ONLY RUN THIS SCRIPT ON A TEST SYSTEM !!!
 
-## Todo: harden the service, work with port config options, add enter key to confirmation
+## Todo: add ARM version and variables, harden the service, work with port config options, add enter key to confirmation
 
 #########################################
 

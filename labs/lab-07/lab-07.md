@@ -8,9 +8,12 @@ In this lab we will:
 
 > Note: This is the most complex and massive lab so far. Take it step-by-step!
 
-> Note: If you do not have a Kubernetes cluster or minikube running, see the following labs in the *z-more-info* directory:
+> Note: If you do not have a Kubernetes cluster or minikube running, see the following in the *z-more-info* directory:
+  > - [MicroK8s Setup](../../z-more-info/microk8s/microk8s-notes.md)
   > - [Vanilla Kubernetes Setup](../../z-more-info/k8s-scripts/README.md)
   > - [Minikube](../../z-more-info/minikube/minikube-install.md)
+
+---
 
 ## Install Prometheus and Grafana to a Kubernetes Cluster using Helm
 
@@ -64,7 +67,9 @@ Install the Prometheus stack using Helm:
 
 `helm install stable prometheus-community/kube-prometheus-stack -n prometheus`
 
-Give this a minute to complete.
+Give this a minute to complete. (It will be silent.)
+
+> Note: If using MicroK8s, precede the last command with `microk8s` (even if you have an alias). Perform this process with other K8s distributions such as minikube if necessary.
 
 When done, issue the following command:
 
