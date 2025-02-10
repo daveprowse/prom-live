@@ -2,11 +2,11 @@
 
 #########################################
 
-## Updated November, 2024. Written by Dave Prowse: https://prowse.tech
+## Updated February, 2025. Written by Dave Prowse: https://prowse.tech
 
 ## This script will install the Prometheus node_exporter and run it as a service. 
 
-## It is tested on Ubuntu 22.04, Ubuntu 24.04, Debian 12, and Centos 9, but should work on other systemd-based Linux distros as well.
+## It is tested on AMD64 and ARM64-based systems including: Ubuntu 22.04, Ubuntu 24.04, Debian 12, and Centos 9, but should work on other systemd-based Linux distros as well.
 
 ## Check that your firewalls have port 9100 open.
 
@@ -14,37 +14,58 @@
 
 ## !!! THIS IS FOR EDUCATIONAL PURPOSES ONLY. ONLY RUN THIS SCRIPT ON A TEST SYSTEM !!!
 
-## Todo: add ARM version and variables, harden the service, work with port config options, add enter key to confirmation
+## Todo: harden the service, work with port config options, add enter key to confirmation
 
 #########################################
 
 # Variables
 NODE_EXPORTER_VERSION=v1.8.2
-NODE_EXPORTER=node_exporter-1.8.2.linux-amd64
+NODE_EXPORTER_AMD64=node_exporter-1.8.2.linux-amd64
+NODE_EXPORTER_ARM64=node_exporter-1.8.2.linux-arm64
 UBUNTU_MAN_VERSION=noble
 
 # sudo check and confirmation
 clear -x
 if [ "$(id -u)" -ne 0 ]; then echo;echo "Please run as root or with 'sudo'." >&2; echo; exit 1; fi
 
-printf "\n\033[7;31mTHIS SCRIPT WILL INSTALL THE PROMETHEUS %s\n AND RUN IT AS A SERVICE. \033[0m" "$NODE_EXPORTER_VERSION"
+printf "\n\033[7;31mTHIS SCRIPT WILL INSTALL THE PROMETHEUS NODE_EXPORTER %s AND RUN IT AS A SERVICE. \033[0m" "$NODE_EXPORTER_VERSION"
 printf '%.0s\n' {1..2}
-read -p "Are you sure? [y,n]:  " -n 1 -r
+read -p "Are you sure you want to proceed? (y,n): " -r response
 printf '%.0s\n' {1..2}
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
+if [[ $response =~ ^[Yy]$ ]]; then
 start=$SECONDS  
 printf '%.0s\n' {1..2}
 
 # Install node_exporter
 echo
-sleep 1
-echo
+printf "\n\033[7;32mSTARTING PROMETHEUS NODE_EXPORTER %s INSTALLATION IN 3 SECONDS! \033[0m" "$PROMVERSION"
+echo;sleep 3;echo
 mkdir temp 
 cd temp || return
-wget https://github.com/prometheus/node_exporter/releases/download/$NODE_EXPORTER_VERSION/$NODE_EXPORTER.tar.gz
-tar -xvf $NODE_EXPORTER.tar.gz
-cp ./$NODE_EXPORTER/node_exporter /usr/local/bin
+
+### Determine CPU architecture using 'uname -m'
+arch=$(uname -m)
+
+## Download, extract, and copy Prometheus Node Exporter files
+### if statement to install corresponding package based on architecture determination
+if [ "$arch" == "x86_64" ]; then
+    echo "Installing package for x86_64 architecture..."
+    # Replace "package_name_x86_64" with the actual package name for x86_64
+    wget https://github.com/prometheus/node_exporter/releases/download/$NODE_EXPORTER_VERSION/$NODE_EXPORTER_AMD64.tar.gz
+    tar -xvf $NODE_EXPORTER_AMD64.tar.gz
+    cp ./$NODE_EXPORTER_AMD64/node_exporter /usr/local/bin
+elif [ "$arch" == "aarch64" ]; then
+    echo "Installing package for ARM64 architecture..."
+    # Replace "package_name_arm64" with the actual package name for ARM64
+    wget https://github.com/prometheus/node_exporter/releases/download/$NODE_EXPORTER_VERSION/$NODE_EXPORTER_ARM64.tar.gz
+    tar -xvf $NODE_EXPORTER_ARM64.tar.gz
+    cp ./$NODE_EXPORTER_ARM64/node_exporter /usr/local/bin
+else
+    echo "Unsupported architecture: $arch"
+    printf "Go to https://prometheus.io/download/ to download other binaries."
+    printf '%.0s\n' {1..2}
+    exit 1
+fi
 
 # Build node_exporter service
 useradd -rs /bin/false node_exporter

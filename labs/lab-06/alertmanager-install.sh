@@ -2,11 +2,11 @@
 
 #########################################
 
-## Updated November, 2024. Written by Dave Prowse: https://prowse.tech
+## Updated February, 2025. Written by Dave Prowse: https://prowse.tech
 
 ## This script will install the Prometheus alert_manager and run it as a service. 
 
-## It is tested on Ubuntu 22.04, Debian 12, and Centos 9, but should work on other systemd-based Linux distros as well.
+## It is tested on AMD64 and ARM64 - Ubuntu 22.04, Debian 12, and Centos 9, but should work on other systemd-based Linux distros as well.
 
 ## Check that your firewalls have port 9093 open.
 
@@ -14,27 +14,30 @@
 
 ## !!! THIS IS FOR EDUCATIONAL PURPOSES ONLY. ONLY RUN THIS SCRIPT ON A TEST SYSTEM !!!
 
-## Todo: Add ARM version and variables, harden the service, work with port config options, add enter key to confirmation
+## Todo: harden the service, work with port config options, add enter key to confirmation
 
 #########################################
 
 # Variables
 ALERTMANAGER_VERSION=v0.28.0
-ALERTMANAGER=alertmanager-0.28.0.linux-amd64
+ALERTMANAGER_AMD64=alertmanager-0.28.0.linux-amd64
+ALERTMANAGER_ARM64=alertmanager-0.28.0.linux-arm64
 UBUNTU_MAN_VERSION=noble
 
 # sudo check and confirmation
 clear -x
 if [ "$(id -u)" -ne 0 ]; then echo;echo "Please run as root or with 'sudo'." >&2; echo; exit 1; fi
 
-printf "\n\033[7;31mTHIS SCRIPT WILL INSTALL THE PROMETHEUS ALERTMANAGER %s\n AND RUN IT AS A SERVICE. \033[0m" "$ALERTMANAGER_VERSION"
+printf "\n\033[7;31mTHIS SCRIPT WILL INSTALL THE PROMETHEUS ALERTMANAGER %s AND RUN IT AS A SERVICE. \033[0m" "$ALERTMANAGER_VERSION"
 printf '%.0s\n' {1..2}
-read -p "Are you sure? [y,n]:  " -n 1 -r
+read -p "Are you sure you want to proceed? (y,n): " -r response
 printf '%.0s\n' {1..2}
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
+if [[ $response =~ ^[Yy]$ ]]; then
+start=$SECONDS  
+printf '%.0s\n' {1..2}
 start=$SECONDS  
 printf '%.0s\n' {1..3}
+
 sleep 1
 mkdir temp 
 cd temp || return
@@ -44,14 +47,34 @@ groupadd --system alertmanager
 useradd -s /sbin/nologin --system -g alertmanager alertmanager
 mkdir -p /var/lib/alertmanager
 chown -R alertmanager:alertmanager /var/lib/alertmanager
+mkdir /etc/alertmanager
 chown alertmanager:alertmanager /etc/alertmanager
 
 # Install alertmanager
-wget https://github.com/prometheus/alertmanager/releases/download/$ALERTMANAGER_VERSION/$ALERTMANAGER.tar.gz
-tar -xvf $ALERTMANAGER.tar.gz
-cd $ALERTMANAGER || return
+## Determine CPU architecture using 'uname -m'
+arch=$(uname -m)
+
+# Download, extract, and copy Prometheus Node Exporter files
+## if statement to install corresponding package based on architecture determination
+if [ "$arch" == "x86_64" ]; then
+    echo "Installing package for x86_64 architecture..."
+    wget https://github.com/prometheus/alertmanager/releases/download/$ALERTMANAGER_VERSION/$ALERTMANAGER_AMD64.tar.gz
+    tar -xvf $ALERTMANAGER_AMD64.tar.gz
+    cd $ALERTMANAGER_AMD64 || return
+elif [ "$arch" == "aarch64" ]; then
+    echo "Installing package for ARM64 architecture..."
+    wget https://github.com/prometheus/alertmanager/releases/download/$ALERTMANAGER_VERSION/$ALERTMANAGER_ARM64.tar.gz
+    tar -xvf $ALERTMANAGER_ARM64.tar.gz
+    cd $ALERTMANAGER_ARM64 || return
+else
+    echo "Unsupported architecture: $arch"
+    printf "Go to https://prometheus.io/download/ to download other binaries."
+    printf '%.0s\n' {1..2}
+    exit 1
+fi
+
+# Copy files
 cp {alertmanager,amtool} /usr/local/bin
-mkdir /etc/alertmanager
 cp {alertmanager.yml,LICENSE,NOTICE} /etc/alertmanager
 
 # Build alertmanager service
