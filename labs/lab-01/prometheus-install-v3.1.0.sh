@@ -66,12 +66,15 @@ else
     printf '%.0s\n' {1..2}
     exit 1
 fi
-## Copy Prometheus files to system directories
-cp {prometheus,promtool} /usr/bin/
-cp -r {LICENSE,NOTICE,prometheus.yml} /etc/prometheus
+
 ## Set permissions for prometheus system account
 chown prometheus:prometheus /usr/bin/prometheus
 chown -R prometheus:prometheus /var/lib/prometheus
+chown -R prometheus:prometheus /etc/prometheus
+
+## Copy Prometheus files to system directories
+cp {prometheus,promtool} /usr/bin/
+cp -r {LICENSE,NOTICE,prometheus.yml} /etc/prometheus
 
 # Build Prometheus service
 cat << "EOF" > "/lib/systemd/system/prometheus.service"
