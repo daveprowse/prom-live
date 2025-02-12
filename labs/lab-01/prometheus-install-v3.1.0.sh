@@ -67,14 +67,13 @@ else
     exit 1
 fi
 
-## Set permissions for prometheus system account
+## Copy Prometheus files to system directories and set ownership/permissions
+cp {prometheus,promtool} /usr/bin/
 chown prometheus:prometheus /usr/bin/prometheus
-chown -R prometheus:prometheus /var/lib/prometheus
+cp -r {LICENSE,NOTICE,prometheus.yml} /etc/prometheus
+chmod 664 /etc/prometheus/prometheus.yml
 chown -R prometheus:prometheus /etc/prometheus
 
-## Copy Prometheus files to system directories
-cp {prometheus,promtool} /usr/bin/
-cp -r {LICENSE,NOTICE,prometheus.yml} /etc/prometheus
 
 # Build Prometheus service
 cat << "EOF" > "/lib/systemd/system/prometheus.service"

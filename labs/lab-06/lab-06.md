@@ -217,7 +217,15 @@ Now, view the Alert in the Prometheus web UI again. It should show one firing al
 
 ---
 
-## (Optional Extra Credit) Install the Apache exporter
+## (Optional Extra Credit) 
+
+### Check the Rules File with promtool
+
+Consider using the promtool to check the syntax of your rules file:
+
+`promtool check rules /etc/prometheus/rules.yml`
+
+### Install the Apache exporter
 
 **Difficulty level: Advanced**
 
