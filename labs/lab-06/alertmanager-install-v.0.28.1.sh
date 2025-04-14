@@ -19,9 +19,9 @@
 #########################################
 
 # Variables
-ALERTMANAGER_VERSION=v0.28.0
-ALERTMANAGER_AMD64=alertmanager-0.28.0.linux-amd64
-ALERTMANAGER_ARM64=alertmanager-0.28.0.linux-arm64
+ALERTMANAGER_VERSION=v0.28.1
+ALERTMANAGER_AMD64=alertmanager-0.28.1.linux-amd64
+ALERTMANAGER_ARM64=alertmanager-0.28.1.linux-arm64
 UBUNTU_MAN_VERSION=noble
 
 # sudo check and confirmation

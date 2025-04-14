@@ -9,9 +9,9 @@ In this lab we will:
 > Note: This is the most complex and massive lab so far. Take it step-by-step!
 
 > Note: If you do not have a Kubernetes cluster or minikube running, see the following in the *z-more-info* directory:
-  > - [MicroK8s Setup](../../z-more-info/microk8s/microk8s-notes.md)
-  > - [Vanilla Kubernetes Setup](../../z-more-info/k8s-scripts/README.md)
-  > - [Minikube](../../z-more-info/minikube/minikube-install.md)
+> - [MicroK8s Setup](../../z-more-info/microk8s/microk8s-notes.md)
+> - [Vanilla Kubernetes Setup](../../z-more-info/k8s-scripts/README.md)
+> - [Minikube](../../z-more-info/minikube/minikube-install.md)
 
 ---
 
@@ -149,8 +149,9 @@ You have two options to add an external IP to your Prometheus and Grafana servic
   - Again, add the syntax shown below.
 
 > **Note:** If you are working on a cloud-based system, simply configuring the "ClusterIP" option is often enough. If not, follow the next step.
- 
+
 - Set the IP address within the service configuration files with a new line directly under spec >  clusterIPs:
+    
     ```console
     externalIPs:
     - <ip address>
@@ -339,6 +340,7 @@ Then, change the namespace dropdown to *http*.
 You should see the CPU usage (and quota) for that namespace.
 
 Add a threshold for alerts:
+
 - On the CPU Usage panel click the edit (3 dots) button and select edit.
 - Scroll down to Thresholds
 - Add one at 80% (or T1 level 2 absolute).
@@ -365,6 +367,7 @@ Boom! You are monitoring Kubernetes!
 You can use several other built-in dashboards to further monitor the service, pods, namespace, and so on. This is going to work in essentially the same manner for other applications. However, if you are creating your own applications, you will often need to configure the scraping of metrics as well.
 
 ---
+
 ## Extra Credit
 
 - Solo Grafana install with Helm: https://grafana.com/docs/grafana/latest/setup-grafana/installation/helm/

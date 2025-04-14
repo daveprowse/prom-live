@@ -45,6 +45,7 @@ You could also set up Kubernetes with one of the following options:
 - **MiniKube**: For details on how to setup a Minkube, click [here](./z-more-info/minikube/minikube-install.md). If you want to run minikube then I recommend doing it on a Linux system with a GUI (desktop interface).
 
 You can also build K8s in the following ways:
+
 - Quick builds for Go or Docker environments: Click [here](https://github.com/kubernetes/kubernetes)
 - AWS EKS: For more information from AWS, click [here](https://aws.amazon.com/eks/).
 - Google GKE: For more information from Google, click [here](https://cloud.google.com/kubernetes-engine).
