@@ -16,7 +16,7 @@ These scripts are based on the work of the following:
 
 ## Install Ubuntu Servers
 
-> Note: You will want Ubuntu 22.04 Server for this installation. [ISO Image link](https://releases.ubuntu.com/jammy/ubuntu-22.04.4-live-server-amd64.iso)
+> Note: You will want Ubuntu 22.04 Server or newer for this installation. [ISO Image link](https://releases.ubuntu.com/jammy/ubuntu-22.04.4-live-server-amd64.iso)
 
 - Install the operating system to a virtual machine. This will be the Kubernetes Controller.
 - Make two clones of the virtual machine. These will be Worker1 and Worker2.
