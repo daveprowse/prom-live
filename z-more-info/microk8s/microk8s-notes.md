@@ -16,4 +16,4 @@ Also, you will want to give your user account permissions to MicroK8s so you don
 
 `sudo usermod -aG microk8s <user_account>`
 
-> Note: If Kubernetes doesn't recognize your command (or gives TCP 127.0.0.1 errors) then make sure you preface the command with `microk8s`.
+> Note: If Kubernetes (or Helm) doesn't recognize your command (or gives TCP 127.0.0.1 errors) then make sure you preface the command with `microk8s`.
