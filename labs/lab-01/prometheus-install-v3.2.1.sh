@@ -18,9 +18,9 @@
 #########################################
 
 # Variables
-PROMVERSION=v3.2.1
-PROM_AMD64=prometheus-3.2.1.linux-amd64
-PROM_ARM64=prometheus-3.2.1.linux-arm64
+PROMVERSION=v3.4.1
+PROM_AMD64=prometheus-3.4.1.linux-amd64
+PROM_ARM64=prometheus-3.4.1.linux-arm64
 UBUNTU_MAN_VERSION=noble
 
 clear -x
