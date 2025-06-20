@@ -2,7 +2,7 @@
 
 #########################################
 
-## Updated April, 2025. Written by Dave Prowse: https://prowse.tech
+## Updated June, 2025. Written by Dave Prowse: https://prowse.tech
 
 ## This script will install Prometheus on Ubuntu 22.04/24.04 or Debian 12 systems. 
 ## AMD64 and ARM64 architectures are supported.
@@ -39,6 +39,8 @@ printf '%.0s\n' {1..2}
 echo
 printf "\n\033[7;32mSTARTING PROMETHEUS %s INSTALLATION IN 3 SECONDS! \033[0m" "$PROMVERSION"
 echo;sleep 3;echo
+mkdir temp 
+cd temp || return
 ## Create system user and directories
 groupadd --system prometheus
 useradd -s /sbin/nologin --system -g prometheus prometheus
