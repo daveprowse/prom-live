@@ -32,6 +32,8 @@ If you don't have either Debian or Ubuntu you can download them from the followi
 
 Most importantly, to install Prometheus see the first lab at [this link](./labs/lab-01/README.md).
 
+> Note: I don't recommend WSL, but if you have to use it, use an Ubuntu kernel.
+
 ## Kubernetes
 
 You might also be interested in running, and monitoring, Kubernetes. During the course I'll be monitoring the following:

@@ -2,9 +2,9 @@
 
 #########################################
 
-## Updated June, 2025. Written by Dave Prowse: https://prowse.tech
+## Updated December, 2025. Written by Dave Prowse: https://prowse.tech
 
-## This script will install Prometheus on Ubuntu 22.04/24.04 or Debian 12 systems. 
+## This script will install Prometheus on Ubuntu 22.04/24.04 or Debian 12/13 systems. 
 ## AMD64 and ARM64 architectures are supported.
 ### It can also work with CentOS but you may have to run this command: 'chcon -t bin_t '/usr/bin/prometheus'
 ## Prometheus will be set up as a service that runs automatically.
@@ -18,9 +18,9 @@
 #########################################
 
 # Variables
-PROMVERSION=v3.4.1
-PROM_AMD64=prometheus-3.4.1.linux-amd64
-PROM_ARM64=prometheus-3.4.1.linux-arm64
+PROMVERSION=v3.8.0
+PROM_AMD64=prometheus-3.8.0.linux-amd64
+PROM_ARM64=prometheus-3.8.0.linux-arm64
 UBUNTU_MAN_VERSION=noble
 
 clear -x

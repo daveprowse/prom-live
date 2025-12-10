@@ -6,7 +6,7 @@ There are a variety of ways to install Prometheus. For example, you can do a bas
 
 ## Scripted Installation
 
-The included `prometheus-install` script is designed for Ubuntu 22.04/24.04 Server and Debian 12 Server (amd64 and arm64 platforms) and has been tested on both.
+The included `prometheus-install` script is designed for Ubuntu 22.04/24.04 Server and Debian 12/13 Server (amd64 and arm64 platforms) and has been tested on both.
 
 > IMPORTANT! This script is designed to install newer versions of Prometheus. However, the version installed may not be an LTS version, and it may have compatibility issues with some Linux distros and with some Prometheus add-ons and graphing utilities.
 
@@ -126,6 +126,14 @@ I do not have a script for Windows or macOS but you can download Prometheus for 
 The configuration file (prometheus.yml) is located within the same directory as the Prometheus executable.
 
 > Note: This is an easy way to run and learn about Prometheus but will not be feasible in a real-world situation. In the field you will want to run it in a Linux server or in a Docker container.
+
+### WSL
+
+I was able to get Prometheus install script to work in WSL using the Ubuntu 24.04 kernel. However, it would not work in the Debian kernel or other distros.
+
+That said, I don't recommend WSL for this webinar or for learning about Prometheus.
+
+*I strongly urge you to use a full VM in a real virtualization system such as VirtualBox or VMWare Workstation*
 
 ### Homebrew and Chocolatey
 
