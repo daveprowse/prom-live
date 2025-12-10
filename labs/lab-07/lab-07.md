@@ -23,7 +23,9 @@ The Prometheus Community maintains a group of Helm charts that can install Prome
 
 Before beginning the lab, be sure that your controller and workers are up and running properly:
 
-`kubectl get nodes`
+```
+kubectl get nodes
+```
 
 > Note: If you are using minikube then run `minikube start`.
 
@@ -31,25 +33,35 @@ Before beginning the lab, be sure that your controller and workers are up and ru
 
 First let's install Helm on the Kubernetes controller. Here's the one-liner to install Helm v3.
 
-`curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash`
+```
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+```
 
 > Note: That should work on most Linux distributions. See [this link](https://helm.sh/docs/intro/install/) for more Helm installation options.
 
 Check if it installed properly and is executable as a binary:
 
-`helm version`
+```console
+helm version
+```
 
 Now, add the stable Helm charts:
 
-`helm repo add stable https://charts.helm.sh/stable`
+```
+helm repo add stable https://charts.helm.sh/stable
+```
 
 Next, add the Prometheus Community Helm repo:
 
-`helm repo add prometheus-community https://prometheus-community.github.io/helm-charts`
+```
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+```
 
 Finally, view the available repos within the prometheus-community:
 
-`helm search repo prometheus-community`
+```
+helm search repo prometheus-community
+```
 
 There will be a bunch! From here, you can see many awesome (and commonly used) exporters and their versions.
 
@@ -61,11 +73,15 @@ Now we'll setup and install Prometheus, node_exporter, alertmanager, and grafana
 
 Create a Prometheus namespace:
 
-`kubectl create namespace prometheus`
+```
+kubectl create namespace prometheus
+```
 
 Install the Prometheus stack using Helm:
 
-`helm install stable prometheus-community/kube-prometheus-stack -n prometheus`
+```
+helm install stable prometheus-community/kube-prometheus-stack -n prometheus
+```
 
 Give this a minute to complete. (It will be silent.)
 
@@ -73,11 +89,15 @@ Give this a minute to complete. (It will be silent.)
 
 When done, issue the following command:
 
-`kubectl get pods -n prometheus`
+```
+kubectl get pods -n prometheus
+```
 
 or
 
-`kubectl --namespace prometheus get pods -l "release=stable"`
+```
+kubectl --namespace prometheus get pods -l "release=stable"
+```
 
 > Note: For minikube, use the following command to see the pods:
 > `minikube kubectl -- get pods --namespace prometheus`
@@ -165,6 +185,13 @@ You have two options to add an external IP to your Prometheus and Grafana servic
    > Note: Remember to replace `<ip_address>` with the IP address of your Kubernetes controller!
 
 Check your work with `kubectl get svc -n prometheus`. You should see the EXTERNAL-IP addresses and they should now be accessible from remote systems.
+
+> Note: You can also access the Grafana local instance by exporting a variable and forwarding a port:
+
+> `kubectl get secret --namespace prometheus -l app.kubernetes.io/component=admin-secret -o jsonpath="{.items[0].data.admin-password}" | base64 --decode ; echo`
+
+> `kubectl --namespace prometheus port-forward $POD_NAME 3000`
+
 
 #### minikube
 
