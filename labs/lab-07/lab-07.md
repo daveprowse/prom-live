@@ -23,7 +23,9 @@ The Prometheus Community maintains a group of Helm charts that can install Prome
 
 Before beginning the lab, be sure that your controller and workers are up and running properly:
 
-`kubectl get nodes`
+```
+kubectl get nodes
+```
 
 > Note: If you are using minikube then run `minikube start`.
 
