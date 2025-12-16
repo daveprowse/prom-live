@@ -71,21 +71,73 @@ Done!
 
 Now we'll setup and install Prometheus, node_exporter, alertmanager, and grafana - which are all part of the "kube-prometheus-stack".
 
-Create a Prometheus namespace:
+- Create a Prometheus namespace:
 
-```
-kubectl create namespace prometheus
-```
+  ```
+  kubectl create namespace prometheus
+  ```
 
-Install the Prometheus stack using Helm:
+- Build a custom values file for the namespace:
 
-```
-helm install stable prometheus-community/kube-prometheus-stack -n prometheus
-```
+  ```
+  grafana:
+  sidecar:
+    dashboards:
+      enabled: true
+      env:
+        SKIP_TLS_VERIFY: "true"
+        IGNORE_ALREADY_PROCESSED_CONFIG_MAPS: "true"
+        ENABLE_5XX: "false"
+        HEALTH_SERVER_PORT: "8081"
+    datasources:
+      enabled: true  
+      env:
+        SKIP_TLS_VERIFY: "true"
+        ENABLE_5XX: "false"
+        HEALTH_SERVER_PORT: "8082"
+  ```
+  Save it to the user's home directory on the controller as `prometheus-values.yaml`.
+- Install the Prometheus stack using Helm:
 
-Give this a minute to complete. (It will be silent.)
+  ```
+  helm install stable prometheus-community/kube-prometheus-stack -n prometheus -f prometheus-values.yaml
+  ```
 
-> Note: If using MicroK8s, precede the last command with `microk8s` (even if you have an alias). Perform this process with other K8s distributions such as minikube if necessary.
+  ---
+
+  > Note (alternative): You might be able to get away with omitting the values file and install with the following command, but this method could cause the Grafana pods (and subsequently, the Grafana server) to fail. 
+
+  >```
+  >helm install stable prometheus-community/>kube-prometheus-stack -n prometheus
+  >```
+
+  ---
+
+  **Give this a minute to complete. (It will be silent.)**
+
+  > Note: If using MicroK8s, precede the last command with `microk8s` (even if you have an alias). Perform this process with other K8s distributions such as minikube if necessary.
+
+  > If you want to run the command in a more verbose fashion here are some options:
+
+  ```
+  # Option 1: Debug mode (very verbose)
+  helm install stable prometheus-community/kube-prometheus-stack -n prometheus -f prometheus-values.yaml --debug
+
+  # Option 2: Wait and show progress (recommended)
+  helm install stable prometheus-community/kube-prometheus-stack -n prometheus -f prometheus-values.yaml --wait --timeout 10m
+
+  # Option 3: Both!
+  helm install stable prometheus-community/kube-prometheus-stack -n prometheus -f prometheus-values.yaml --debug --wait --timeout 10m
+  
+  Or watch the install in realtime (with TMUX):
+  # Terminal 1: Run helm install
+  helm install stable prometheus-community/kube-prometheus-stack -n prometheus -f prometheus-values.yaml
+
+  # Terminal 2: Watch pods being created
+  watch kubectl get pods -n prometheus
+  ```
+
+### Verify Pods and Service
 
 When done, issue the following command:
 
@@ -245,9 +297,11 @@ Now, let's connect to the Grafana server from the browser. Remember that we are 
 
 `http://<ip_address>`
   
-The password should be *prom-operator* but if it is different, you can decipher and decode it with the following command at your Kubernetes controller or minikube system.
+The password needs to be generated. You can decipher and decode it with the following command at your Kubernetes controller or minikube system.
 
 `kubectl get secret --namespace prometheus stable-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo`
+
+> Note: This command was listed in your terminal when the Prometheus stack installation completed. 
 
 ### Examine Dashboards
 
